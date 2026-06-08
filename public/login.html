@@ -174,6 +174,45 @@
             transform: translateY(-1px);
             box-shadow: 0 8px 20px -6px rgba(17, 94, 89, 0.15) !important;
         }
+
+        /* Liquid Bubble styling */
+        .liquid-bubble {
+            position: absolute;
+            backdrop-filter: blur(4px);
+            border: 1px solid hsla(0, 0%, 100%, 0.3);
+            pointer-events: none;
+            will-change: transform, border-radius, opacity;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.7;
+            }
+            85% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-20vh) scale(1.4) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes wobble {
+            0%, 100% {
+                border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+            }
+            33% {
+                border-radius: 40% 60% 45% 55% / 42% 42% 58% 58%;
+            }
+            66% {
+                border-radius: 55% 45% 58% 42% / 58% 52% 48% 42%;
+            }
+        }
     </style>
 <style>
     body {
@@ -191,8 +230,9 @@
 <div class="hidden md:block">
 <p class="text-label-md font-label-md text-on-surface-variant">Version 2.4.0</p>
 </div>
-</header>
 <main class="flex-grow flex items-center justify-center px-margin-mobile md:px-0 py-12 relative overflow-hidden">
+<!-- Liquid Bubble Container -->
+<div id="bubble-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
 <!-- Abstract Background Decoration -->
 <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
 <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-[hsl(172,80%,40%)] to-[hsl(243,75%,69%)] rounded-full blur-[100px] animate-blob-1 opacity-20"></div>
@@ -391,5 +431,43 @@
             const icon = togglePass.querySelector('span');
             icon.innerText = type === 'password' ? 'visibility' : 'visibility_off';
         });
+
+        // Dynamic Liquid Bubble Generator
+        const bubbleContainer = document.getElementById('bubble-container');
+        const bubbleCount = 18;
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('liquid-bubble');
+            
+            // Randomize bubble size (30px to 110px)
+            const size = Math.random() * 80 + 30;
+            // Randomize horizontal position (0% to 100%)
+            const left = Math.random() * 100;
+            // Randomize floating animation duration (15s to 30s)
+            const duration = Math.random() * 15 + 15;
+            // Negative delays so bubbles are spread across the screen from start
+            const delay = Math.random() * -30;
+            // Randomize wobbling duration (5s to 9s)
+            const wobbleDuration = Math.random() * 4 + 5;
+            
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            bubble.style.left = `${left}%`;
+            bubble.style.animation = `floatUp ${duration}s linear infinite, wobble ${wobbleDuration}s ease-in-out infinite`;
+            bubble.style.animationDelay = `${delay}s, 0s`;
+            
+            // Randomize organic theme-matching gradients
+            const colorOption = Math.random();
+            if (colorOption < 0.33) {
+                bubble.style.background = 'linear-gradient(135deg, hsla(172, 80%, 30%, 0.08) 0%, hsla(150, 80%, 35%, 0.08) 100%)';
+            } else if (colorOption < 0.66) {
+                bubble.style.background = 'linear-gradient(135deg, hsla(243, 75%, 59%, 0.08) 0%, hsla(172, 80%, 30%, 0.08) 100%)';
+            } else {
+                bubble.style.background = 'linear-gradient(135deg, hsla(32, 95%, 55%, 0.06) 0%, hsla(172, 80%, 30%, 0.06) 100%)';
+            }
+            
+            bubbleContainer.appendChild(bubble);
+        }
     </script>
 </body></html>

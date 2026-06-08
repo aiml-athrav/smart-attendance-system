@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EduSync Attendance - Teacher Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "hsl(172, 80%, 30%)",
+                        "on-primary": "#ffffff",
+                        "primary-container": "hsl(243, 80%, 96%)",
+                        "on-primary-container": "hsl(243, 80%, 25%)",
+                        "secondary": "hsl(150, 80%, 35%)",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "hsl(150, 80%, 96%)",
+                        "on-secondary-container": "hsl(150, 80%, 20%)",
+                        "background": "hsl(215, 15%, 97%)",
+                        "on-background": "hsl(222, 47%, 11%)",
+                        "surface": "#ffffff",
+                        "on-surface": "hsl(222, 47%, 11%)",
+                        "surface-variant": "hsl(215, 15%, 93%)",
+                        "on-surface-variant": "hsl(215, 10%, 40%)",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "hsl(215, 15%, 97%)",
+                        "surface-container": "#ffffff",
+                        "surface-container-high": "hsl(215, 15%, 93%)",
+                        "surface-container-highest": "hsl(215, 10%, 85%)",
+                        "outline": "hsl(215, 10%, 85%)",
+                        "outline-variant": "hsl(215, 12%, 91%)",
+                        "error": "#ef4444",
+                        "on-error": "#ffffff",
+                        "error-container": "#fee2e2",
+                        "on-error-container": "#991b1b",
+                        "tertiary": "hsl(32, 95%, 55%)",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "hsl(32, 95%, 96%)",
+                        "on-tertiary-container": "hsl(32, 95%, 20%)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "container-max": "1280px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                        "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+                        "button-text": ["Plus Jakarta Sans", "sans-serif"],
+                        "label-md": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "button-text": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background-color: hsl(215, 15%, 97%);
+            background-image: 
+                radial-gradient(circle at 0% 0%, hsla(172, 80%, 30%, 0.03) 0%, transparent 35%),
+                radial-gradient(circle at 100% 100%, hsla(243, 75%, 59%, 0.03) 0%, transparent 35%);
+            min-height: max(884px, 100dvh);
+        }
+        button.bg-primary, 
+        input[type="submit"].bg-primary,
+        .btn-primary {
+            background: linear-gradient(135deg, hsl(172, 80%, 30%) 0%, hsl(243, 75%, 59%) 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        button.bg-primary:hover, 
+        input[type="submit"].bg-primary:hover {
+            opacity: 0.95;
+            box-shadow: 0 4px 15px rgba(30, 27, 75, 0.15) !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        input, select, textarea {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Auto Hover Animations for All Cards, Buttons, and Interactive Elements */
+        .bg-surface-container-lowest, 
+        .bg-surface-container-low,
+        .bg-surface,
+        tr.hover\:bg-surface-variant {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .bg-surface-container-lowest:hover,
+        .bg-surface-container-low:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.06), 0 8px 20px -12px rgba(0, 0, 0, 0.02) !important;
+            border-color: rgba(79, 70, 229, 0.25) !important;
+        }
+        
+        button, 
+        input[type="submit"] {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        button:hover,
+        input[type="submit"]:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        button:active,
+        input[type="submit"]:active {
+            transform: translateY(0.5px);
+            scale: 0.98;
+        }
+        
+        aside button,
+        nav a {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        aside button:hover {
+            transform: translateX(4px);
+        }
+
+        input:hover, select:hover, textarea:hover {
+            border-color: #94a3b8 !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            transform: scale(1.002);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface min-h-screen">
+    <!-- Navigation Drawer (Desktop) -->
+    <aside
+        class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 bg-surface-container-lowest border-r border-outline-variant w-64">
+        <div class="p-lg flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-headline-sm" data-icon="school">school</span>
+            <h1 class="text-headline-sm font-headline-sm font-bold text-primary">EduSync</h1>
+        </div>
+        <div class="px-4 py-6 flex flex-col gap-1 overflow-y-auto">
+            <button id="btn-overview"
+                class="w-full text-left flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 transition-all cursor-pointer">
+                <span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+                <span class="text-label-md font-label-md">Overview</span>
+            </button>
+            <button id="btn-my-classes"
+                class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-low transition-colors cursor-pointer">
+                <span class="material-symbols-outlined" data-icon="class">class</span>
+                <span class="text-label-md font-label-md">My Classes</span>
+            </button>
+            <button id="btn-attendance-logs"
+                class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-low transition-colors cursor-pointer">
+                <span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+                <span class="text-label-md font-label-md">Attendance Logs</span>
+            </button>
+            <button id="btn-notices-view"
+                class="w-full text-left flex items-center justify-between text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-low transition-colors cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined relative" data-icon="campaign">
+                        campaign
+                        <span id="notice-badge-dot" class="hidden absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border border-white"></span>
+                    </span>
+                    <span class="text-label-md font-label-md">Notice Board</span>
+                </div>
+                <span id="notice-badge-count" class="hidden bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center">0</span>
+            </button>
+            <button id="btn-complaints-view"
+                class="w-full text-left flex items-center justify-between text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-low transition-colors cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined relative" data-icon="report_problem">
+                        report_problem
+                        <span id="complaints-badge-dot" class="hidden absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border border-white"></span>
+                    </span>
+                    <span class="text-label-md font-label-md">Raise any problem</span>
+                </div>
+                <span id="complaints-badge-count" class="hidden bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center">0</span>
+            </button>
+        </div>
+        <div class="mt-auto p-4 border-t border-outline-variant">
+            <a class="flex items-center gap-3 px-2 hover:text-error transition-colors" href="login.html">
+                <span class="material-symbols-outlined text-on-surface-variant group-hover:text-error"
+                    data-icon="logout">logout</span>
+                <div>
+                    <p class="text-label-md font-bold">Logout</p>
+                    <p class="text-[10px] text-on-surface-variant">Exit your session</p>
+                </div>
+            </a>
+            <p class="text-[10px] text-center mt-4 text-outline-variant">v2.4.0</p>
+        </div>
+    </aside>
+    <!-- Top AppBar -->
+    <header
+        class="sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant shadow-sm w-full md:pl-64">
+        <div
+            class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-3 max-w-container-max mx-auto">
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-primary md:hidden" data-icon="menu">menu</span>
+                <h2 class="text-headline-md font-headline-md text-primary hidden md:block">Teacher Dashboard</h2>
+                <h2 class="text-headline-sm font-headline-sm text-primary md:hidden">EduSync</h2>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Connectivity Indicators -->
+                <div
+                    class="flex items-center gap-3 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant">
+                    <div class="flex items-center gap-1 group cursor-help relative">
+                        <span class="material-symbols-outlined text-secondary text-[20px]" data-icon="wifi"
+                            data-weight="fill" style="font-variation-settings: 'FILL' 1;">wifi</span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-inverse-surface text-inverse-on-surface text-[10px] px-2 py-1 rounded">
+                            Online</div>
+                    </div>
+                    <div class="flex items-center gap-1 group cursor-help relative">
+                        <span class="material-symbols-outlined text-secondary text-[20px]" data-icon="location_on"
+                            data-weight="fill" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                        <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-inverse-surface text-inverse-on-surface text-[10px] px-2 py-1 rounded">
+                            GPS Locked</div>
+                    </div>
+                </div>
+                <div id="teacher-profile-trigger"
+                    class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-primary-container p-0.5 cursor-pointer hover:scale-105 transition-all">
+                    <img alt="Teacher Profile" class="w-full h-full rounded-full"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzsQUPHULWXuc27c0paocgfUnpjagR9uXF4dKLYAEil0TxdmtfPbSUcYd5Ngp5voR2HDidnqZduhjfTg6GlbB78mSifVuAQdCzNZf1V833XS-zUHtvSt5uRUssSsuaWmNMA9E1gFyuUFpDua_sLzOiRyGMAP6NZmtpiXc2ZljU4YoJhbFA8nvBTS1kKI9t-zl8-8F-m0-xkozGYMXBc_It4Z14Zloyj6LaVv8ptVC0sHJ4vTcFq5wZw6XuqrpqhxUoQaZ2B6FZQXXJ" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="md:pl-64 pb-20 md:pb-8">
+        <div class="max-w-container-max mx-auto p-margin-mobile md:p-margin-desktop space-y-gutter">
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="space-y-gutter">
+                <!-- Active Announcement Banner -->
+                <div id="teacher-notice-banner"
+                    class="hidden bg-primary-container text-on-primary-container p-4 rounded-xl border border-primary/20 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-headline-sm animate-bounce"
+                            data-icon="campaign">campaign</span>
+                        <div>
+                            <p class="text-label-md font-bold text-primary" id="banner-notice-title">Notice Title</p>
+                            <p class="text-xs text-on-surface-variant mt-0.5" id="banner-notice-desc">Description of
+                                notice</p>
+                        </div>
+                    </div>
+                    <button onclick="showView('notices')"
+                        class="text-xs font-bold bg-primary text-on-primary px-3 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all whitespace-nowrap">View
+                        All</button>
+                </div>
+                <!-- Today's Timetable Section -->
+                <section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-lg">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-outline-variant">
+                        <div>
+                            <h3 class="text-headline-sm font-bold text-primary">Timetable</h3>
+                            <p class="text-label-md text-on-surface-variant" id="timetable-subtitle">Scheduled classes
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5" id="timetable-day-selector">
+                            <button data-day="Monday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Mon</button>
+                            <button data-day="Tuesday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Tue</button>
+                            <button data-day="Wednesday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Wed</button>
+                            <button data-day="Thursday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Thu</button>
+                            <button data-day="Friday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Fri</button>
+                            <button data-day="Saturday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Sat</button>
+                            <button data-day="Sunday"
+                                class="timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Sun</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low border-b border-outline-variant">
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Time</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Department</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Subject</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Division</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Location</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timetable-table-body" class="divide-y divide-outline-variant">
+                                <!-- Dynamic timetable list -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Start New Class & QR Code Generator -->
+                <section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-headline-sm font-bold text-primary">Start a New Class & Generate QR</h3>
+                        <span class="material-symbols-outlined text-outline" data-icon="qr_code_2">qr_code_2</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                        <!-- Left inputs side -->
+                        <div class="md:col-span-5 space-y-4">
+                            <div>
+                                <label class="text-label-md font-semibold text-on-surface-variant mb-1 block">Class /
+                                    Subject</label>
+                                <select id="qr-class-select"
+                                    class="w-full p-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                    <!-- Dynamic options -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-label-md font-semibold text-on-surface-variant mb-1 block">Class
+                                    Duration / QR Expiry</label>
+                                <div class="flex gap-2">
+                                    <input type="number" id="qr-expiry-value" min="1" value="5"
+                                        class="w-2/3 p-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                                        placeholder="Enter duration">
+                                    <select id="qr-expiry-unit"
+                                        class="w-1/3 p-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all">
+                                        <option value="seconds">Seconds</option>
+                                        <option value="minutes" selected>Minutes</option>
+                                        <option value="hours">Hours</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="generate-qr-btn"
+                                class="w-full bg-primary text-on-primary py-3 rounded-lg text-button-text font-bold shadow-md hover:bg-surface-tint active:scale-95 transition-all flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+                                Start Class & Generate QR
+                            </button>
+                        </div>
+
+                        <!-- Right QR display side -->
+                        <div
+                            class="md:col-span-7 flex flex-col items-center justify-center bg-surface-container-low rounded-xl border border-outline-variant p-lg">
+                            <div class="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mb-4">
+                                <img id="qr-image" alt="QR Code" class="w-full h-full opacity-20 grayscale"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIjMxkxsrUQCxf1eu26U-QFU7Y24BshwdwI5NJ7_JeFuXlZlZTbPCSeLjAQ3tLXZ3-6GdkWDXlt4dNVYtuJ9y6BIHMZfXDbfCVnFogkx1pNhz1rwUfkd7l83HTmhBJUYsuouPvdZiOrF8YnK3aBq37StvSWxY6ktuIixP0M5UQ85t8Yy4ouT3qgm2VB369yNs5dbVUUit6v--lIlvg0psJRYwnEkslEUbmjwbymhBHPvnaNWQqxr4Sla0TY0yYdJkyC7qI7d1Xqb9R" />
+                            </div>
+                            <div class="flex items-center gap-2 text-error font-bold mb-4">
+                                <span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+                                <span class="text-label-md">QR Expiry Timer: <span id="timer">--:--</span></span>
+                            </div>
+                            <!-- Live Ticker Section -->
+                            <div id="live-ticker-container"
+                                class="w-full border-t border-outline-variant pt-4 hidden space-y-2">
+                                <div class="flex justify-between items-center text-label-md font-bold text-primary">
+                                    <span>Live Attendance Status</span>
+                                    <span>Present: <span id="live-present-count" class="text-secondary">0</span> / <span
+                                            id="live-total-count">0</span></span>
+                                </div>
+                                <!-- Progress bar -->
+                                <div class="w-full bg-surface-container-high rounded-full h-1.5 overflow-hidden">
+                                    <div id="live-progress-bar"
+                                        class="bg-secondary h-1.5 w-0 transition-all duration-500"></div>
+                                </div>
+                                <!-- Scrolling ticker list -->
+                                <div id="live-ticker-list"
+                                    class="w-full max-h-28 overflow-y-auto space-y-1.5 custom-scrollbar text-xs border border-outline-variant/50 rounded-lg p-2 bg-surface-container-lowest text-on-surface-variant">
+                                    <p class="text-center italic opacity-60 py-2">Waiting for check-ins...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div> <!-- End Dashboard View -->
+
+            <!-- Notices Board View -->
+            <div id="notices-view" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant">
+                    <div class="flex justify-between items-center mb-lg border-b border-outline-variant pb-4">
+                        <div>
+                            <h3 class="text-headline-sm font-bold text-primary">Announcement Board</h3>
+                            <p class="text-body-md text-on-surface-variant">Important events, holiday declarations,
+                                half-days, and rescheduling notices</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button id="btn-add-notice"
+                                class="bg-primary text-on-primary px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-sm">add</span> Post Announcement
+                            </button>
+                            <span
+                                class="material-symbols-outlined text-primary text-[40px] bg-primary/10 p-3 rounded-full"
+                                data-icon="campaign">campaign</span>
+                        </div>
+                    </div>
+
+                    <div id="notices-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                        <!-- Dynamically populated by loadNotices() -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Classes View (Calendar + Student Attendance detail) -->
+            <div id="my-classes-view" class="hidden space-y-gutter">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                    <!-- Calendar Column -->
+                    <div
+                        class="lg:col-span-5 bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant">
+                        <div class="flex justify-between items-center mb-lg">
+                            <h3 class="text-headline-sm font-bold text-primary">Attendance Calendar</h3>
+                            <div class="flex items-center gap-2">
+                                <button id="prev-month-btn"
+                                    class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low transition-colors">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <span id="current-month-label"
+                                    class="text-body-md font-bold min-w-[120px] text-center">June 2026</span>
+                                <button id="next-month-btn"
+                                    class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low transition-colors">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            class="grid grid-cols-7 gap-2 text-center text-label-md font-semibold mb-2 text-on-surface-variant">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div id="calendar-days-grid" class="grid grid-cols-7 gap-2">
+                            <!-- Dynamically generated days -->
+                        </div>
+                    </div>
+
+                    <!-- Classes and Details Column -->
+                    <div class="lg:col-span-7 space-y-gutter">
+                        <!-- Classes List for Selected Date -->
+                        <div
+                            class="bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant">
+                            <h3 class="text-headline-sm mb-lg" id="selected-date-label">Classes on June 5, 2026</h3>
+                            <div id="date-classes-list" class="space-y-md">
+                                <p class="text-on-surface-variant text-body-md italic text-center">Select a date from
+                                    the calendar to view class details.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Logs View (Full screen logs calendar) -->
+            <div id="attendance-logs-view" class="hidden space-y-gutter">
+                <div class="bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant w-full">
+                    <div class="flex justify-between items-center mb-lg">
+                        <h3 class="text-headline-sm font-bold text-primary">Attendance Logs Calendar</h3>
+                        <div class="flex items-center gap-2">
+                            <button id="log-prev-month-btn"
+                                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <span id="log-current-month-label"
+                                class="text-body-md font-bold min-w-[120px] text-center">June 2026</span>
+                            <button id="log-next-month-btn"
+                                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="grid grid-cols-7 gap-2 text-center text-label-md font-semibold mb-2 text-on-surface-variant">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div id="log-calendar-days-grid" class="grid grid-cols-7 gap-2">
+                        <!-- Dynamically generated days -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Classes Modal -->
+            <div id="log-classes-modal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div
+                    class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-lg relative max-h-[80vh] flex flex-col">
+                    <button id="close-log-classes-modal"
+                        class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                    <h3 id="log-classes-modal-title" class="text-headline-sm font-bold text-primary mb-4">Classes
+                        Conducted</h3>
+                    <div id="log-classes-modal-list" class="space-y-md overflow-y-auto flex-1 custom-scrollbar pr-2">
+                        <!-- Dynamic classes list -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Students Attendance Modal -->
+            <div id="log-students-modal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div
+                    class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-2xl relative max-h-[85vh] flex flex-col">
+                    <button id="close-log-students-modal"
+                        class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                    <h3 id="log-students-modal-title" class="text-headline-sm font-bold text-primary mb-2">Class Student
+                        Attendance</h3>
+                    <p id="log-students-modal-subtitle" class="text-label-md text-on-surface-variant mb-4">Roll-wise
+                        List</p>
+
+                    <div class="overflow-y-auto flex-1 custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low border-b border-outline-variant sticky top-0 z-10">
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Roll No</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Student Name</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Time Marked</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="log-students-modal-table-body" class="divide-y divide-outline-variant">
+                                <!-- Dynamic student list -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        class="mt-4 pt-4 border-t border-outline-variant flex justify-between items-center text-body-md font-bold">
+                        <div></div>
+                        <div class="flex gap-2">
+                            <button id="log-modal-export"
+                                class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-button-text hover:bg-surface-tint transition-all flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">download</span> Export CSV
+                            </button>
+                            <button id="log-modal-ok"
+                                class="bg-primary text-on-primary px-6 py-2 rounded-lg font-button-text hover:bg-surface-tint transition-all">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Attendance Modal -->
+            <div id="today-attendance-modal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div
+                    class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-2xl relative max-h-[85vh] flex flex-col">
+                    <button id="close-today-modal"
+                        class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                    <h3 id="today-modal-title" class="text-headline-sm font-bold text-primary mb-2">Today's Class
+                        Attendance</h3>
+                    <p id="today-modal-subtitle" class="text-label-md text-on-surface-variant mb-4">Class Details</p>
+
+                    <div class="overflow-y-auto flex-1 custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low border-b border-outline-variant sticky top-0 z-10">
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Roll No</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Student Name</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Time Marked</th>
+                                    <th class="px-md py-3 text-label-md font-bold text-on-surface-variant uppercase">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="today-modal-table-body" class="divide-y divide-outline-variant">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div
+                        class="mt-4 pt-4 border-t border-outline-variant flex justify-between items-center text-body-md font-bold">
+                        <div>
+                            Total: <span id="today-modal-total">0</span> |
+                            Present: <span id="today-modal-present" class="text-secondary">0</span> |
+                            Absent: <span id="today-modal-absent" class="text-error">0</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="today-modal-export"
+                                class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-button-text hover:bg-surface-tint transition-all flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">download</span> Export CSV
+                            </button>
+                            <button id="today-modal-ok"
+                                class="bg-primary text-on-primary px-6 py-2 rounded-lg font-button-text hover:bg-surface-tint transition-all">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaints / Raise Problem View -->
+            <div id="complaints-view" class="hidden space-y-lg">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                    <!-- Raise Complaint to Admin -->
+                    <div class="lg:col-span-5 bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="material-symbols-outlined text-primary">report_problem</span>
+                            <h3 class="text-headline-sm font-bold text-primary">Raise any problem to Admin</h3>
+                        </div>
+                        
+                        <form id="raise-complaint-form" class="space-y-4">
+                            <div class="space-y-1">
+                                <label class="text-label-md font-semibold text-on-surface-variant">Subject</label>
+                                <input type="text" id="complaint-subject" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all" placeholder="Brief summary of the issue">
+                            </div>
+                            
+                            <div class="space-y-1">
+                                <label class="text-label-md font-semibold text-on-surface-variant">Message / Details</label>
+                                <textarea id="complaint-message" rows="4" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all" placeholder="Enter detailed complaint/problem content here..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full py-3 bg-primary text-on-primary rounded-lg font-button-text hover:bg-surface-tint transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md">
+                                <span class="material-symbols-outlined text-sm">send</span> Submit to Admin
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Received & Sent Complaints -->
+                    <div class="lg:col-span-7 space-y-lg">
+                        <!-- Received from Students -->
+                        <div class="bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant flex flex-col">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 border-b border-outline-variant/30 pb-3">
+                                <h3 class="text-headline-sm font-bold text-primary">Received from Students</h3>
+                                <div>
+                                    <select id="filter-received-status" onchange="loadComplaints()" class="border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-container-low text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                        <option value="All">All Statuses</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Resolved">Resolved</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="received-complaints-list" class="space-y-4 overflow-y-auto max-h-[300px] custom-scrollbar pr-2">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Sent to Admin -->
+                        <div class="bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant flex flex-col">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 border-b border-outline-variant/30 pb-3">
+                                <h3 class="text-headline-sm font-bold text-primary">Your Sent Complaints</h3>
+                                <div>
+                                    <select id="filter-sent-status" onchange="loadComplaints()" class="border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-container-low text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                        <option value="All">All Statuses</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Resolved">Resolved</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="sent-complaints-list" class="space-y-4 overflow-y-auto max-h-[200px] custom-scrollbar pr-2">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Profile Details Modal -->
+            <div id="teacher-profile-modal"
+                class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div
+                    class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-md relative flex flex-col items-center text-center">
+                    <button id="close-teacher-profile-modal"
+                        class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+
+                    <!-- Profile Pic -->
+                    <div class="relative w-24 h-24 mb-4">
+                        <div class="w-full h-full rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-[36px] font-bold shadow-inner overflow-hidden"
+                            id="profile-avatar-large">
+                            TS
+                        </div>
+                        <img id="profile-avatar-img"
+                            class="w-full h-full rounded-full object-cover absolute inset-0 hidden border border-outline-variant shadow-sm"
+                            alt="Profile Pic">
+                    </div>
+
+                    <h3 id="profile-teacher-name" class="text-headline-sm font-bold text-primary mb-1">Dr. John Smith
+                    </h3>
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold mb-3">Faculty
+                        Member</span>
+
+                    <!-- Photo Update Buttons -->
+                    <div class="flex gap-2 mb-4 w-full justify-center">
+                        <button id="btn-open-camera"
+                            class="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 justify-center">
+                            <span class="material-symbols-outlined text-sm">photo_camera</span>
+                            Take Photo
+                        </button>
+                        <button id="btn-select-file"
+                            class="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 justify-center">
+                            <span class="material-symbols-outlined text-sm">upload_file</span>
+                            Select File
+                        </button>
+                        <input type="file" id="profile-file-input" accept="image/*" class="hidden">
+                    </div>
+
+                    <!-- Camera Container -->
+                    <div id="camera-container"
+                        class="w-full hidden border border-outline-variant p-3 rounded-xl bg-surface-container-low mb-4 space-y-2">
+                        <div
+                            class="relative aspect-video w-full max-w-[240px] mx-auto rounded-lg overflow-hidden bg-black border border-outline-variant">
+                            <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover"></video>
+                        </div>
+                        <div class="flex justify-center gap-2">
+                            <button id="btn-capture-photo"
+                                class="bg-primary text-on-primary text-xs font-bold px-3 py-2 rounded-lg hover:bg-surface-tint active:scale-95 transition-all">Capture
+                                Photo</button>
+                            <button id="btn-close-camera"
+                                class="bg-surface-container-low border border-outline-variant text-on-surface-variant text-xs font-bold px-3 py-2 rounded-lg hover:bg-surface-container transition-all">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="w-full space-y-3 text-left bg-surface-container-low p-4 rounded-xl border border-outline-variant mb-4">
+                        <div class="flex justify-between items-center border-b border-outline-variant pb-2">
+                            <span class="text-label-md text-on-surface-variant font-bold">EMAIL</span>
+                            <span id="profile-teacher-email"
+                                class="text-body-md font-semibold">teacher@edusync.edu</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-outline-variant pb-2">
+                            <span class="text-label-md text-on-surface-variant font-bold">DEPARTMENT</span>
+                            <span id="profile-teacher-dept" class="text-body-md font-semibold">Computer Science</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-1">
+                            <span class="text-label-md text-on-surface-variant font-bold">EXPERIENCE</span>
+                            <span id="profile-teacher-experience"
+                                class="text-body-md font-bold text-secondary">--</span>
+                        </div>
+                    </div>
+
+                    <button id="profile-ok-btn"
+                        class="w-full bg-primary text-on-primary py-2.5 rounded-lg text-button-text font-bold hover:bg-surface-tint transition-all">Close</button>
+                </div>
+            </div>
+
+            <!-- Add Notice Modal -->
+            <div id="add-notice-modal"
+                class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                <div
+                    class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+                    <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                        <h3 class="text-headline-sm font-bold text-primary">Post Announcement</h3>
+                        <button id="btn-close-notice-modal"
+                            class="text-on-surface-variant hover:text-error transition-colors">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <form id="notice-form" class="p-6 space-y-4">
+                        <div class="space-y-1">
+                            <label class="text-label-md font-semibold text-on-surface-variant">Notice Title</label>
+                            <input type="text" id="notice-title" required
+                                class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all"
+                                placeholder="e.g. Guest Lecture on Quantum Computing">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-label-md font-semibold text-on-surface-variant">Category</label>
+                                <select id="notice-category"
+                                    class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                                    <option value="General">General</option>
+                                    <option value="Event">Event</option>
+                                    <option value="Class Reschedule">Class Reschedule</option>
+                                    <option value="Holiday">Holiday</option>
+                                    <option value="Exam">Exam</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-label-md font-semibold text-on-surface-variant">Target Department</label>
+                                <select id="notice-dept" onchange="onNoticeDeptChange()"
+                                    class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                                    <!-- Populated dynamically with teacher's departments -->
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Target Audience Selector -->
+                        <div class="space-y-1">
+                            <label class="text-label-md font-semibold text-on-surface-variant">Send Notice To</label>
+                            <select id="notice-target-type" onchange="toggleNoticeStudentTarget()"
+                                class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                                <option value="ALL">Entire Department (Public)</option>
+                                <option value="STUDENT">Specific Student (Private Notice)</option>
+                            </select>
+                        </div>
+                        <div id="div-notice-student-select" class="hidden space-y-1">
+                            <label class="text-label-md font-semibold text-on-surface-variant">Select Student</label>
+                            <select id="notice-student"
+                                class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                                <option value="">Select a Student...</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-label-md font-semibold text-on-surface-variant">Content /
+                                Description</label>
+                            <textarea id="notice-content" rows="4" required
+                                class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all"
+                                placeholder="Enter detailed notice content here..."></textarea>
+                        </div>
+                        <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant">
+                            <button type="button" id="btn-cancel-notice-modal"
+                                class="px-4 py-2 border border-outline text-on-surface-variant rounded-lg font-button-text hover:bg-surface-container transition-all">Cancel</button>
+                            <button type="submit"
+                                class="px-4 py-2 bg-primary text-on-primary rounded-lg font-button-text hover:opacity-90 active:scale-95 transition-all">Post
+                                Notice</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <!-- Bottom Nav Bar (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant flex justify-around items-center px-margin-mobile py-2 rounded-t-xl shadow-lg">
+        <a id="mobile-btn-overview"
+            class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform active:scale-90 duration-150 cursor-pointer">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span class="text-label-md font-label-md">Dashboard</span>
+        </a>
+        <a id="mobile-btn-my-classes"
+            class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-all cursor-pointer">
+            <span class="material-symbols-outlined" data-icon="class">class</span>
+            <span class="text-label-md font-label-md">My Classes</span>
+        </a>
+        <a id="mobile-btn-attendance-logs"
+            class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-all cursor-pointer">
+            <span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+            <span class="text-label-md font-label-md">Logs</span>
+        </a>
+        <a id="mobile-btn-notices-view"
+            class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-all cursor-pointer relative">
+            <span class="material-symbols-outlined relative" data-icon="campaign">
+                campaign
+                <span id="mobile-notice-badge-dot" class="hidden absolute top-0 right-0 w-2 h-2 bg-error rounded-full border border-white"></span>
+            </span>
+            <span class="text-label-md font-label-md">Notices</span>
+        </a>
+        <a id="mobile-btn-complaints-view"
+            class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-all cursor-pointer relative">
+            <span class="material-symbols-outlined relative" data-icon="report_problem">
+                report_problem
+                <span id="mobile-complaints-badge-dot" class="hidden absolute top-0 right-0 w-2 h-2 bg-error rounded-full border border-white"></span>
+            </span>
+            <span class="text-label-md font-label-md">Support</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-all"
+            href="login.html">
+            <span class="material-symbols-outlined" data-icon="logout">logout</span>
+            <span class="text-label-md font-label-md">Logout</span>
+        </a>
+    </nav>
+    <script src="js/api.js"></script>
+    <script>
+        if (!getToken()) {
+            window.location.href = 'login.html';
+        }
+
+        let qrTimerInterval;
+        let qrSecondsLeft = 0;
+        let activeClassesList = [];
+        let selectedClassIdForToday = '';
+        let selectedCalendarDateStr = new Date().toISOString().split('T')[0];
+
+        let liveTickerInterval = null;
+        let loggedStudentIds = new Set();
+
+        let lastTodayAttendanceData = [];
+        let lastTodayClassTitle = '';
+        let lastTodayDateStr = '';
+        let lastLogAttendanceData = [];
+        let lastLogClassTitle = '';
+        let lastLogDateStr = '';
+
+        function exportAttendanceToCSV(attendanceData, classTitle, dateStr) {
+            if (!attendanceData || attendanceData.length === 0) {
+                alert("No attendance records to export.");
+                return;
+            }
+
+            const headers = ["Roll No", "Student Name", "Time Marked", "Status"];
+            const rows = attendanceData.map(att => {
+                let timeStr = '--:--';
+                if (att.timeMarked) {
+                    timeStr = new Date(att.timeMarked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                }
+                return [
+                    att.rollNo || 'N/A',
+                    att.name,
+                    timeStr,
+                    att.status.toUpperCase()
+                ];
+            });
+
+            const filename = `${classTitle.replace(/[^a-z0-9]/gi, '_')}_Attendance_${dateStr}.csv`;
+            const csvContent = [headers.join(','), ...rows.map(r => r.map(val => `"${val}"`).join(","))].join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function startLiveTicker(classId) {
+            clearInterval(liveTickerInterval);
+            loggedStudentIds.clear();
+
+            const tickerContainer = document.getElementById('live-ticker-container');
+            const tickerList = document.getElementById('live-ticker-list');
+            tickerContainer.classList.remove('hidden');
+            tickerList.innerHTML = '<p class="text-center italic opacity-60 py-2">Waiting for check-ins...</p>';
+
+            const poll = async () => {
+                try {
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const response = await apiFetch(`/teacher/class-attendance/${classId}/date/${todayStr}`);
+                    if (!response.ok) return;
+                    const data = await response.json();
+
+                    const presentStudents = data.attendance || [];
+                    const presentCount = data.summary ? data.summary.presentCount : 0;
+                    const totalCount = presentStudents.length;
+
+                    // Update count and progress
+                    document.getElementById('live-present-count').textContent = presentCount;
+                    document.getElementById('live-total-count').textContent = totalCount;
+                    const pct = totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0;
+                    document.getElementById('live-progress-bar').style.width = `${pct}%`;
+
+                    // Filter newly present students
+                    const newlyCheckedIn = presentStudents.filter(s => (s.status === 'present' || s.status === 'late') && !loggedStudentIds.has(s.studentId));
+
+                    if (newlyCheckedIn.length > 0) {
+                        if (tickerList.querySelector('.italic')) {
+                            tickerList.innerHTML = '';
+                        }
+
+                        newlyCheckedIn.forEach(s => {
+                            loggedStudentIds.add(s.studentId);
+                            const checkTime = s.timeMarked ? new Date(s.timeMarked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Just now';
+
+                            const item = document.createElement('div');
+                            item.className = "flex justify-between items-center bg-secondary-container/20 border border-secondary/15 rounded p-1.5 animate-[fadeIn_0.3s_ease-out] text-[11px] mb-1.5 last:mb-0";
+                            item.innerHTML = `
+                                <span class="font-bold text-on-surface">🎓 ${s.name} <span class="text-[9px] opacity-60">(${s.rollNo})</span></span>
+                                <span class="text-secondary font-semibold">${s.status.toUpperCase()} (${checkTime})</span>
+                            `;
+                            tickerList.prepend(item);
+                        });
+                    }
+                } catch (err) {
+                    console.error('Error fetching live ticker data:', err);
+                }
+            };
+
+            poll(); // call immediately
+            liveTickerInterval = setInterval(poll, 3000); // poll every 3 seconds
+        }
+
+        function stopLiveTicker() {
+            clearInterval(liveTickerInterval);
+            liveTickerInterval = null;
+        }
+
+        function startQRTimer(durationSeconds, classId) {
+            clearInterval(qrTimerInterval);
+            qrSecondsLeft = durationSeconds;
+            const timerElement = document.getElementById('timer');
+
+            startLiveTicker(classId);
+
+            qrTimerInterval = setInterval(() => {
+                if (qrSecondsLeft <= 0) {
+                    clearInterval(qrTimerInterval);
+                    timerElement.textContent = "Expired";
+                    document.getElementById('qr-image').classList.add('opacity-20', 'grayscale');
+                    stopLiveTicker();
+                    return;
+                }
+                const minutes = Math.floor(qrSecondsLeft / 60);
+                const seconds = qrSecondsLeft % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                qrSecondsLeft--;
+            }, 1000);
+        }
+        // View Toggling logic
+            const dashboardView = document.getElementById('dashboard-view');
+            const myClassesView = document.getElementById('my-classes-view');
+            const attendanceLogsView = document.getElementById('attendance-logs-view');
+            const noticesView = document.getElementById('notices-view');
+            const complaintsView = document.getElementById('complaints-view');
+
+            const btnOverview = document.getElementById('btn-overview');
+            const btnMyClasses = document.getElementById('btn-my-classes');
+            const btnAttendanceLogs = document.getElementById('btn-attendance-logs');
+            const btnNotices = document.getElementById('btn-notices-view');
+            const btnComplaints = document.getElementById('btn-complaints-view');
+
+            const mobileBtnOverview = document.getElementById('mobile-btn-overview');
+            const mobileBtnMyClasses = document.getElementById('mobile-btn-my-classes');
+            const mobileBtnAttendanceLogs = document.getElementById('mobile-btn-attendance-logs');
+            const mobileBtnNotices = document.getElementById('mobile-btn-notices-view');
+            const mobileBtnComplaints = document.getElementById('mobile-btn-complaints-view');
+
+            const activeDesktopClass = "w-full text-left flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 transition-all cursor-pointer";
+            const inactiveDesktopClass = "w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 hover:bg-surface-container-low transition-colors cursor-pointer";
+
+            const activeMobileClass = "flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform active:scale-90 duration-150 cursor-pointer";
+            const inactiveMobileClass = "flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container transition-all cursor-pointer";
+
+            function showView(viewName) {
+                dashboardView.classList.add('hidden');
+                myClassesView.classList.add('hidden');
+                attendanceLogsView.classList.add('hidden');
+                noticesView.classList.add('hidden');
+                complaintsView.classList.add('hidden');
+
+                btnOverview.className = inactiveDesktopClass;
+                btnMyClasses.className = inactiveDesktopClass;
+                btnAttendanceLogs.className = inactiveDesktopClass;
+                btnNotices.className = inactiveDesktopClass;
+                btnComplaints.className = inactiveDesktopClass;
+
+                mobileBtnOverview.className = inactiveMobileClass;
+                mobileBtnMyClasses.className = inactiveMobileClass;
+                mobileBtnAttendanceLogs.className = inactiveMobileClass;
+                mobileBtnNotices.className = inactiveMobileClass;
+                mobileBtnComplaints.className = inactiveMobileClass;
+
+                if (viewName === 'overview') {
+                    dashboardView.classList.remove('hidden');
+                    btnOverview.className = activeDesktopClass;
+                    mobileBtnOverview.className = activeMobileClass;
+                    loadTeacherDashboard();
+                } else if (viewName === 'my-classes') {
+                    myClassesView.classList.remove('hidden');
+                    btnMyClasses.className = activeDesktopClass;
+                    mobileBtnMyClasses.className = activeMobileClass;
+                    loadMyClassesCalendar();
+                } else if (viewName === 'logs') {
+                    attendanceLogsView.classList.remove('hidden');
+                    btnAttendanceLogs.className = activeDesktopClass;
+                    mobileBtnAttendanceLogs.className = activeMobileClass;
+                    loadAttendanceLogs();
+                } else if (viewName === 'notices') {
+                    noticesView.classList.remove('hidden');
+                    btnNotices.className = activeDesktopClass;
+                    mobileBtnNotices.className = activeMobileClass;
+                    
+                    // Mark notices as read
+                    localStorage.setItem('lastReadNoticesTimestamp', Date.now().toString());
+                    const badgeDot = document.getElementById('notice-badge-dot');
+                    const mobileBadgeDot = document.getElementById('mobile-notice-badge-dot');
+                    const badgeCount = document.getElementById('notice-badge-count');
+                    if (badgeDot) badgeDot.classList.add('hidden');
+                    if (mobileBadgeDot) mobileBadgeDot.classList.add('hidden');
+                    if (badgeCount) badgeCount.classList.add('hidden');
+                    
+                    loadNotices();
+                } else if (viewName === 'complaints') {
+                    complaintsView.classList.remove('hidden');
+                    btnComplaints.className = activeDesktopClass;
+                    mobileBtnComplaints.className = activeMobileClass;
+                    loadComplaints();
+                }
+            }
+
+            btnOverview.addEventListener('click', () => showView('overview'));
+            btnMyClasses.addEventListener('click', () => showView('my-classes'));
+            btnAttendanceLogs.addEventListener('click', () => showView('logs'));
+            btnNotices.addEventListener('click', () => showView('notices'));
+            btnComplaints.addEventListener('click', () => showView('complaints'));
+            mobileBtnOverview.addEventListener('click', () => showView('overview'));
+            mobileBtnMyClasses.addEventListener('click', () => showView('my-classes'));
+            mobileBtnAttendanceLogs.addEventListener('click', () => showView('logs'));
+            mobileBtnNotices.addEventListener('click', () => showView('notices'));
+            mobileBtnComplaints.addEventListener('click', () => showView('complaints'));
+
+            // Complaints view functions
+            async function loadComplaints() {
+                try {
+                    const res = await apiFetch('/complaints');
+                    if (!res.ok) throw new Error('Failed to load complaints');
+                    const complaints = await res.json();
+                    
+                    const receivedContainer = document.getElementById('received-complaints-list');
+                    const sentContainer = document.getElementById('sent-complaints-list');
+                    receivedContainer.innerHTML = '';
+                    sentContainer.innerHTML = '';
+                    
+                    const filterReceived = document.getElementById('filter-received-status').value;
+                    const filterSent = document.getElementById('filter-sent-status').value;
+                    
+                    let received = complaints.filter(c => c.receiverRole === 'teacher' && c.receiver && c.receiver._id === getUser()._id);
+                    if (filterReceived !== 'All') {
+                        received = received.filter(c => c.status === filterReceived);
+                    }
+                    
+                    let sent = complaints.filter(c => c.sender && c.sender._id === getUser()._id);
+                    if (filterSent !== 'All') {
+                        sent = sent.filter(c => c.status === filterSent);
+                    }
+                    
+                    if (received.length === 0) {
+                        receivedContainer.innerHTML = `<p class="text-center py-6 text-body-md text-on-surface-variant italic">No complaints received.</p>`;
+                    } else {
+                        received.forEach(c => {
+                            const dateStr = new Date(c.createdAt).toLocaleDateString('en-US', {
+                                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                            });
+                            
+                            const resolveBtn = c.status === 'Pending' 
+                                ? `<button onclick="resolveComplaint('${c._id}')" class="text-secondary hover:text-green-700 transition-colors p-1 flex items-center justify-center rounded-lg hover:bg-secondary-container/20"><span class="material-symbols-outlined text-[18px]">check_circle</span> <span class="text-xs font-bold ml-1">Resolve</span></button>` 
+                                : `<span class="text-xs font-bold text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">done_all</span> Resolved</span>`;
+                            
+                            receivedContainer.innerHTML += `
+                                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant hover:shadow-sm transition-all flex flex-col gap-2">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <span class="text-xs text-on-surface-variant font-medium">From: <strong class="text-on-surface">${c.sender ? c.sender.name : 'Student'} (${c.sender ? c.sender.rollNo : 'N/A'})</strong></span>
+                                            <h4 class="text-body-md font-bold text-on-surface mt-1">${c.subject}</h4>
+                                        </div>
+                                        <div>${resolveBtn}</div>
+                                    </div>
+                                    <p class="text-xs text-on-surface-variant leading-relaxed whitespace-pre-wrap">${c.message}</p>
+                                    <span class="text-[10px] text-on-surface-variant self-end mt-1">${dateStr}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    if (sent.length === 0) {
+                        sentContainer.innerHTML = `<p class="text-center py-6 text-body-md text-on-surface-variant italic">No complaints sent to Admin.</p>`;
+                    } else {
+                        sent.forEach(c => {
+                            const dateStr = new Date(c.createdAt).toLocaleDateString('en-US', {
+                                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                            });
+                            
+                            const statusClass = c.status === 'Resolved' 
+                                ? 'bg-secondary-container text-on-secondary-container' 
+                                : 'bg-amber-100 text-amber-800';
+                                
+                            sentContainer.innerHTML += `
+                                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant hover:shadow-sm transition-all flex flex-col gap-2">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="text-body-md font-bold text-on-surface">${c.subject}</h4>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${statusClass}">${c.status}</span>
+                                    </div>
+                                    <p class="text-xs text-on-surface-variant leading-relaxed whitespace-pre-wrap">${c.message}</p>
+                                    <span class="text-[10px] text-on-surface-variant self-end mt-1">${dateStr}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            window.resolveComplaint = async function(complaintId) {
+                try {
+                    const res = await apiFetch(`/complaints/${complaintId}/resolve`, { method: 'PUT' });
+                    if (!res.ok) {
+                        const data = await res.json();
+                        throw new Error(data.error || 'Failed to resolve complaint');
+                    }
+                    alert('Complaint marked as resolved!');
+                    loadComplaints();
+                } catch (err) {
+                    alert(err.message);
+                }
+            };
+
+            document.getElementById('raise-complaint-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const subject = document.getElementById('complaint-subject').value;
+                const message = document.getElementById('complaint-message').value;
+                
+                try {
+                    const res = await apiFetch('/complaints', {
+                        method: 'POST',
+                        body: JSON.stringify({ receiverRole: 'admin', subject, message })
+                    });
+                    if (!res.ok) {
+                        const data = await res.json();
+                        throw new Error(data.error || 'Failed to submit complaint');
+                    }
+                    
+                    alert('Complaint raised to Admin successfully!');
+                    document.getElementById('raise-complaint-form').reset();
+                    loadTeacherDashboard();
+                    loadComplaints();
+                } catch (err) {
+                    alert(err.message);
+                }
+            });
+
+            let dashboardClasses = [];
+            let currentTimetableDay = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+
+            function renderTimetableForDay(day) {
+                currentTimetableDay = day;
+                document.getElementById('timetable-subtitle').textContent = `Scheduled classes for ${day}`;
+
+                document.querySelectorAll('.timetable-day-btn').forEach(btn => {
+                    if (btn.getAttribute('data-day') === day) {
+                        btn.className = "timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-primary text-on-primary shadow-sm";
+                    } else {
+                        btn.className = "timetable-day-btn px-3 py-1.5 rounded-lg text-label-md font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container";
+                    }
+                });
+
+                const tbody = document.getElementById('timetable-table-body');
+                tbody.innerHTML = '';
+
+                const filtered = dashboardClasses.filter(cls => cls.day === day);
+                if (filtered.length > 0) {
+                    filtered.forEach(cls => {
+                        tbody.innerHTML += `
+                        <tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+                            <td class="px-md py-4 text-body-md font-medium text-on-surface-variant">${cls.time}</td>
+                            <td class="px-md py-4 text-body-md font-medium">${cls.department}</td>
+                            <td class="px-md py-4 text-body-md font-bold text-primary">${cls.subject}</td>
+                            <td class="px-md py-4 text-body-md font-medium">${cls.name}</td>
+                            <td class="px-md py-4 text-body-md font-medium">${cls.room || 'N/A'}</td>
+                        </tr>
+                    `;
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-md py-4 text-center text-body-md text-on-surface-variant italic">No classes scheduled for ${day}.</td></tr>`;
+                }
+            }
+
+            document.querySelectorAll('.timetable-day-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const day = e.currentTarget.getAttribute('data-day');
+                    renderTimetableForDay(day);
+                });
+            });
+
+            async function loadNotices() {
+                try {
+                    const res = await apiFetch('/auth/notices');
+                    if (!res.ok) throw new Error('Failed to load notices');
+                    const notices = await res.json();
+
+                    const container = document.getElementById('notices-cards-container');
+                    if (!container) return;
+                    container.innerHTML = '';
+
+                    if (notices.length === 0) {
+                        container.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-body-md text-on-surface-variant italic font-medium">
+                            No announcements posted yet.
+                        </div>
+                    `;
+                        return;
+                    }
+
+                    const currentUser = getUser();
+                    notices.forEach(n => {
+                        const dateStr = new Date(n.createdAt).toLocaleDateString('en-US', {
+                            month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                        });
+                        const categoryColors = {
+                            'Event': 'bg-primary/10 text-primary border border-primary/20',
+                            'Class Reschedule': 'bg-error-container text-error border border-error/20',
+                            'Holiday': 'bg-secondary/10 text-secondary border border-secondary/20',
+                            'Exam': 'bg-tertiary-container text-on-tertiary-container border border-tertiary/20',
+                            'General': 'bg-surface-container-high text-on-surface-variant border border-outline-variant/30'
+                        };
+                        const badgeColor = categoryColors[n.category] || categoryColors['General'];
+                        const posterName = n.postedBy ? n.postedBy.name : 'Administrator';
+
+                        const isOwnNotice = currentUser && n.postedBy && (n.postedBy._id === currentUser._id || n.postedBy === currentUser._id);
+                        const deleteBtn = isOwnNotice ? `
+                        <button onclick="deleteNotice('${n._id}')" class="text-error hover:text-red-700 transition-colors p-1 flex items-center justify-center rounded-lg hover:bg-error-container/20">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                    ` : '';
+
+                        container.innerHTML += `
+                        <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant hover:shadow-md transition-all flex flex-col justify-between gap-4">
+                            <div class="space-y-sm">
+                                <div class="flex justify-between items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${badgeColor}">
+                                        ${n.category}
+                                    </span>
+                                    <span class="text-[11px] text-on-surface-variant font-medium">${dateStr}</span>
+                                </div>
+                                <h4 class="text-title-md font-bold text-on-surface">${n.title}</h4>
+                                <p class="text-body-md text-on-surface-variant whitespace-pre-wrap leading-relaxed">${n.content}</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs text-on-surface-variant border-t border-outline-variant pt-2">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">person</span>
+                                    <span>Posted by: <strong class="text-on-surface">${posterName}</strong></span>
+                                </div>
+                                ${deleteBtn}
+                            </div>
+                        </div>
+                    `;
+                    });
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            window.deleteNotice = async function (noticeId) {
+                if (!confirm('Are you sure you want to delete this announcement?')) return;
+                try {
+                    const res = await apiFetch(`/auth/notices/${noticeId}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        alert('Announcement deleted successfully!');
+                        loadNotices();
+                        loadTeacherDashboard();
+                    } else {
+                        const data = await res.json();
+                        throw new Error(data.error || 'Failed to delete announcement');
+                    }
+                } catch (err) {
+                    alert(err.message);
+                }
+            };
+
+            // Load Teacher Dashboard
+            async function loadTeacherDashboard() {
+                try {
+                    checkNewNotices();
+                    const response = await apiFetch('/teacher/dashboard');
+                    if (!response.ok) throw new Error('Failed to load dashboard');
+                    const data = await response.json();
+
+                    // Update complaints badges
+                    const complaintsBadgeDot = document.getElementById('complaints-badge-dot');
+                    const complaintsBadgeCount = document.getElementById('complaints-badge-count');
+                    const mobComplaintsBadgeDot = document.getElementById('mobile-complaints-badge-dot');
+                    
+                    if (data.pendingComplaintsCount > 0) {
+                        if (complaintsBadgeDot) complaintsBadgeDot.classList.remove('hidden');
+                        if (complaintsBadgeCount) {
+                            complaintsBadgeCount.textContent = data.pendingComplaintsCount;
+                            complaintsBadgeCount.classList.remove('hidden');
+                        }
+                        if (mobComplaintsBadgeDot) mobComplaintsBadgeDot.classList.remove('hidden');
+                    } else {
+                        if (complaintsBadgeDot) complaintsBadgeDot.classList.add('hidden');
+                        if (complaintsBadgeCount) complaintsBadgeCount.classList.add('hidden');
+                        if (mobComplaintsBadgeDot) mobComplaintsBadgeDot.classList.add('hidden');
+                    }
+
+                    // Populate Class Select
+                    const select = document.getElementById('qr-class-select');
+                    select.innerHTML = '';
+                    if (data.activeClasses && data.activeClasses.length > 0) {
+                        activeClassesList = data.activeClasses;
+                        data.activeClasses.forEach(cls => {
+                            select.innerHTML += `<option value="${cls.id}">${cls.name} - ${cls.subject}</option>`;
+                        });
+                    }
+
+                    // Populate Timetable
+                    if (data.activeClasses) {
+                        dashboardClasses = data.activeClasses;
+                    }
+                    renderTimetableForDay(currentTimetableDay);
+
+                    // Fetch and update banner notices
+                    try {
+                        const resNotices = await apiFetch('/auth/notices');
+                        if (resNotices.ok) {
+                            const notices = await resNotices.json();
+                            const banner = document.getElementById('teacher-notice-banner');
+                            if (notices.length > 0 && banner) {
+                                const latest = notices[0];
+                                document.getElementById('banner-notice-title').textContent = `${latest.category.toUpperCase()}: ${latest.title}`;
+                                document.getElementById('banner-notice-desc').textContent = latest.content.substring(0, 150) + (latest.content.length > 150 ? '...' : '');
+                                banner.classList.remove('hidden');
+                            } else if (banner) {
+                                banner.classList.add('hidden');
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Failed to load notices banner', err);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to load dashboard data.");
+                }
+            }
+
+            // Load specific class attendance for today (complete list of students)
+            async function loadTodayClassAttendance(classId, showPopup = false) {
+                try {
+                    const targetDateStr = selectedCalendarDateStr || new Date().toISOString().split('T')[0];
+                    const response = await apiFetch(`/teacher/class-attendance/${classId}/date/${targetDateStr}`);
+                    if (!response.ok) throw new Error('Failed to fetch attendance');
+                    const data = await response.json();
+
+                    // Update Stats (Safely check if elements exist)
+                    const overviewPresent = document.getElementById('overview-present');
+                    if (overviewPresent) overviewPresent.textContent = data.summary.presentCount;
+
+                    const overviewAbsent = document.getElementById('overview-absent');
+                    if (overviewAbsent) overviewAbsent.textContent = data.summary.absentCount;
+
+                    const totalStudents = data.attendance.length;
+                    const overviewTotal = document.getElementById('overview-total');
+                    if (overviewTotal) overviewTotal.textContent = totalStudents;
+
+                    const activeClassAttendance = document.getElementById('active-class-attendance');
+                    if (activeClassAttendance) activeClassAttendance.textContent = `${data.summary.presentCount}/${totalStudents}`;
+
+                    const activeClassBar = document.getElementById('active-class-bar');
+                    if (activeClassBar) {
+                        const percentage = totalStudents > 0 ? Math.round((data.summary.presentCount / totalStudents) * 100) : 0;
+                        activeClassBar.style.width = `${percentage}%`;
+                    }
+
+                    // Update Dashboard Table
+                    const tbody = document.getElementById('attendance-table-body');
+                    if (tbody) {
+                        tbody.innerHTML = '';
+                        if (data.attendance.length === 0) {
+                            tbody.innerHTML = `<tr><td colspan="5" class="px-lg py-4 text-center text-body-md text-on-surface-variant italic">No students registered in this class department.</td></tr>`;
+                            return;
+                        }
+
+                        data.attendance.forEach(att => {
+                            let statusBadge = '';
+                            let timeStr = '--:--';
+
+                            if (att.timeMarked) {
+                                timeStr = new Date(att.timeMarked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            }
+
+                            if (att.status === 'present') {
+                                statusBadge = `<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 w-fit"><span class="material-symbols-outlined text-[14px]">check_circle</span> Present</span>`;
+                            } else if (att.status === 'absent') {
+                                statusBadge = `<span class="bg-error-container text-on-error-container px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 w-fit"><span class="material-symbols-outlined text-[14px]">cancel</span> Absent</span>`;
+                            } else {
+                                statusBadge = `<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 w-fit"><span class="material-symbols-outlined text-[14px]">access_time</span> Late</span>`;
+                            }
+
+                            tbody.innerHTML += `
+                            <tr class="hover:bg-surface-container-low transition-colors">
+                                <td class="px-lg py-4 text-body-md font-medium text-on-surface-variant">${att.rollNo || 'N/A'}</td>
+                                <td class="px-lg py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-[10px] font-bold">${att.name.substring(0, 2).toUpperCase()}</div>
+                                        <span class="text-body-md font-bold">${att.name}</span>
+                                    </div>
+                                </td>
+                                <td class="px-lg py-4 text-body-md">${timeStr}</td>
+                                <td class="px-lg py-4">${statusBadge}</td>
+                                <td class="px-lg py-4 text-right">
+                                    <button class="text-primary hover:underline text-label-md font-bold" onclick="alert('Student: ${att.name}\\nRoll No: ${att.rollNo || 'N/A'}\\nStatus: ${att.status.toUpperCase()}')">Details</button>
+                                </td>
+                            </tr>
+                        `;
+                        });
+                    }
+
+                    if (showPopup) {
+                        lastTodayAttendanceData = data.attendance || [];
+                        lastTodayClassTitle = `${data.classInfo.name} - ${data.classInfo.subject}`;
+                        lastTodayDateStr = targetDateStr;
+
+                        // Populate and open today modal
+                        document.getElementById('today-modal-title').textContent = `${data.classInfo.name} - ${data.classInfo.subject}`;
+                        document.getElementById('today-modal-subtitle').textContent = `Attendance List for ${new Date(targetDateStr).toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })}`;
+                        document.getElementById('today-modal-total').textContent = totalStudents;
+                        document.getElementById('today-modal-present').textContent = data.summary.presentCount;
+                        document.getElementById('today-modal-absent').textContent = data.summary.absentCount;
+
+                        const modalTbody = document.getElementById('today-modal-table-body');
+                        modalTbody.innerHTML = '';
+
+                        data.attendance.forEach(att => {
+                            let timeStr = '--:--';
+                            if (att.timeMarked) {
+                                timeStr = new Date(att.timeMarked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            }
+
+                            let bgClass = '';
+                            if (att.status === 'present') bgClass = 'bg-secondary-container text-on-secondary-container';
+                            else if (att.status === 'absent') bgClass = 'bg-error-container text-on-error-container';
+                            else bgClass = 'bg-tertiary-fixed text-on-tertiary-fixed';
+
+                            const selectHtml = `
+                            <select class="${bgClass} px-2 py-1 rounded text-[11px] font-bold outline-none cursor-pointer border border-outline-variant/30 transition-colors" onchange="updateAttendanceManually('${att.studentId}', '${classId}', '${targetDateStr}', this.value, () => loadTodayClassAttendance('${classId}', true))">
+                                <option value="present" class="bg-surface text-on-surface" ${att.status === 'present' ? 'selected' : ''}>Present</option>
+                                <option value="absent" class="bg-surface text-on-surface" ${att.status === 'absent' ? 'selected' : ''}>Absent</option>
+                                <option value="late" class="bg-surface text-on-surface" ${att.status === 'late' ? 'selected' : ''}>Late</option>
+                            </select>
+                        `;
+
+                            modalTbody.innerHTML += `
+                            <tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+                                <td class="px-md py-3 text-body-md font-medium text-on-surface-variant">${att.rollNo || 'N/A'}</td>
+                                <td class="px-md py-3 text-body-md font-bold">${att.name}</td>
+                                <td class="px-md py-3 text-body-md">${timeStr}</td>
+                                <td class="px-md py-3">${selectHtml}</td>
+                            </tr>
+                        `;
+                        });
+
+                        document.getElementById('today-attendance-modal').classList.remove('hidden');
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to load today's attendance details");
+                }
+            }
+
+            window.updateAttendanceManually = async function (studentId, classId, dateStr, newStatus, refreshCallback) {
+                try {
+                    const response = await apiFetch('/teacher/mark-attendance-manual', {
+                        method: 'POST',
+                        body: JSON.stringify({ studentId, classId, dateStr, status: newStatus })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Failed to update attendance');
+                    if (refreshCallback) {
+                        await refreshCallback();
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert(err.message);
+                }
+            }
+
+            // View Attendance button click
+            document.getElementById('btn-view-attendance')?.addEventListener('click', () => {
+                const classId = document.getElementById('qr-class-select').value || selectedClassIdForToday;
+                if (!classId) return alert('No class available to view attendance.');
+                loadTodayClassAttendance(classId, true);
+            });
+
+            // Close Today Modal Logic
+            const todayModal = document.getElementById('today-attendance-modal');
+            document.getElementById('close-today-modal').addEventListener('click', () => {
+                todayModal.classList.add('hidden');
+            });
+            document.getElementById('today-modal-ok').addEventListener('click', () => {
+                todayModal.classList.add('hidden');
+            });
+            todayModal.addEventListener('click', (e) => {
+                if (e.target === todayModal) {
+                    todayModal.classList.add('hidden');
+                }
+            });
+
+            // Attendance Logs Calendar & Modals Logic
+            let logCalendarDate = new Date();
+
+            async function loadAttendanceLogs() {
+                try {
+                    // Fetch classes if not already loaded
+                    if (teacherClasses.length === 0) {
+                        const classesRes = await apiFetch('/teacher/my-classes');
+                        if (!classesRes.ok) throw new Error();
+                        const classesData = await classesRes.json();
+                        teacherClasses = classesData.classes;
+                    }
+
+                    // Fetch history records
+                    const historyRes = await apiFetch('/teacher/attendance-history');
+                    if (!historyRes.ok) throw new Error();
+                    const historyData = await historyRes.json();
+                    teacherAttendanceRecords = historyData.records;
+
+                    renderLogsCalendar();
+                } catch (error) {
+                    console.error(error);
+                    alert("Error loading logs history");
+                }
+            }
+
+            function renderLogsCalendar() {
+                const year = logCalendarDate.getFullYear();
+                const month = logCalendarDate.getMonth();
+
+                const firstDayIndex = new Date(year, month, 1).getDay();
+                const lastDay = new Date(year, month + 1, 0).getDate();
+                const prevLastDay = new Date(year, month, 0).getDate();
+
+                const months = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+
+                document.getElementById('log-current-month-label').textContent = `${months[month]} ${year}`;
+
+                const grid = document.getElementById('log-calendar-days-grid');
+                grid.innerHTML = '';
+
+                for (let x = firstDayIndex; x > 0; x--) {
+                    grid.innerHTML += `<div class="p-2 text-surface-dim opacity-30 text-body-md text-center">${prevLastDay - x + 1}</div>`;
+                }
+
+                for (let i = 1; i <= lastDay; i++) {
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+
+                    const tempDate = new Date(year, month, i);
+                    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const dayName = daysOfWeek[tempDate.getDay()];
+                    const hasScheduledClasses = teacherClasses.some(c => c.schedule && c.schedule.day === dayName);
+
+                    let dayClass = "p-2 hover:bg-surface-container rounded-lg cursor-pointer transition-colors relative flex flex-col items-center justify-center h-12";
+                    let dotHtml = '';
+
+                    if (hasScheduledClasses) {
+                        dotHtml = '<span class="absolute bottom-1 w-2 h-2 bg-primary rounded-full"></span>';
+                    }
+
+                    grid.innerHTML += `
+                    <div class="${dayClass}" onclick="selectLogDate(${year}, ${month}, ${i})">
+                        <span class="text-body-md font-medium">${i}</span>
+                        ${dotHtml}
+                    </div>
+                `;
+                }
+            }
+
+            document.getElementById('log-prev-month-btn').addEventListener('click', () => {
+                logCalendarDate.setMonth(logCalendarDate.getMonth() - 1);
+                renderLogsCalendar();
+            });
+
+            document.getElementById('log-next-month-btn').addEventListener('click', () => {
+                logCalendarDate.setMonth(logCalendarDate.getMonth() + 1);
+                renderLogsCalendar();
+            });
+
+            window.selectLogDate = function (year, month, day) {
+                const months = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                document.getElementById('log-classes-modal-title').textContent = `Classes Conducted on ${months[month]} ${day}, ${year}`;
+
+                const clickedDate = new Date(year, month, day);
+                const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const dayName = daysOfWeek[clickedDate.getDay()];
+
+                const scheduledClasses = teacherClasses.filter(c => c.schedule && c.schedule.day === dayName);
+
+                const listContainer = document.getElementById('log-classes-modal-list');
+                listContainer.innerHTML = '';
+
+                if (scheduledClasses.length === 0) {
+                    listContainer.innerHTML = `<p class="text-on-surface-variant text-body-md italic text-center py-4">No classes scheduled on this day (${dayName}).</p>`;
+                    document.getElementById('log-classes-modal').classList.remove('hidden');
+                    return;
+                }
+
+                scheduledClasses.forEach(classObj => {
+                    const division = classObj.name || 'B.Tech CS 3rd Year';
+                    const subject = classObj.subject || 'Data Structures';
+                    const department = classObj.department || 'Computer Science';
+                    const time = classObj.schedule ? `${classObj.schedule.startTime} - ${classObj.schedule.endTime}` : '10:00 - 11:00';
+
+                    listContainer.innerHTML += `
+                    <div class="p-md bg-surface-container rounded-xl border border-outline-variant hover:shadow-md transition-all flex justify-between items-center">
+                        <div class="space-y-1">
+                            <h4 class="text-body-md font-bold text-primary">${subject}</h4>
+                            <p class="text-label-md text-on-surface-variant">Division: ${division}</p>
+                            <p class="text-label-md text-on-surface-variant">Time: ${time}</p>
+                            <p class="text-label-md text-on-surface-variant">Dept: ${department}</p>
+                        </div>
+                        <button class="bg-primary text-on-primary text-xs font-semibold px-3 py-2 rounded hover:bg-surface-tint transition-all" onclick="openLogStudentsList('${classObj._id}', '${dateStr}', '${division} - ${subject}')">
+                            Student Details
+                        </button>
+                    </div>
+                `;
+                });
+
+                document.getElementById('log-classes-modal').classList.remove('hidden');
+            }
+
+            window.openLogStudentsList = async function (classId, dateStr, classTitle) {
+                try {
+                    const response = await apiFetch(`/teacher/class-attendance/${classId}/date/${dateStr}`);
+                    if (!response.ok) throw new Error();
+                    const data = await response.json();
+
+                    document.getElementById('log-students-modal-title').textContent = `${classTitle}`;
+                    document.getElementById('log-students-modal-subtitle').textContent = `Attendance Log for ${new Date(dateStr).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}`;
+
+                    lastLogAttendanceData = data.attendance || [];
+                    lastLogClassTitle = classTitle;
+                    lastLogDateStr = dateStr;
+
+                    const tbody = document.getElementById('log-students-modal-table-body');
+                    tbody.innerHTML = '';
+
+                    data.attendance.forEach(att => {
+                        let timeStr = '--:--';
+
+                        if (att.timeMarked) {
+                            timeStr = new Date(att.timeMarked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        }
+
+                        let bgClass = '';
+                        if (att.status === 'present') bgClass = 'bg-secondary-container text-on-secondary-container';
+                        else if (att.status === 'absent') bgClass = 'bg-error-container text-on-error-container';
+                        else bgClass = 'bg-tertiary-fixed text-on-tertiary-fixed';
+
+                        const selectHtml = `
+                        <select class="${bgClass} px-2 py-1 rounded text-[11px] font-bold outline-none cursor-pointer border border-outline-variant/30 transition-colors" onchange="updateAttendanceManually('${att.studentId}', '${classId}', '${dateStr}', this.value, () => openLogStudentsList('${classId}', '${dateStr}', '${classTitle}'))">
+                            <option value="present" class="bg-surface text-on-surface" ${att.status === 'present' ? 'selected' : ''}>Present</option>
+                            <option value="absent" class="bg-surface text-on-surface" ${att.status === 'absent' ? 'selected' : ''}>Absent</option>
+                            <option value="late" class="bg-surface text-on-surface" ${att.status === 'late' ? 'selected' : ''}>Late</option>
+                        </select>
+                    `;
+
+                        tbody.innerHTML += `
+                        <tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+                            <td class="px-md py-3 text-body-md font-medium text-on-surface-variant">${att.rollNo || 'N/A'}</td>
+                            <td class="px-md py-3 text-body-md font-bold">${att.name}</td>
+                            <td class="px-md py-3 text-body-md">${timeStr}</td>
+                            <td class="px-md py-3">${selectHtml}</td>
+                        </tr>
+                    `;
+                    });
+
+                    document.getElementById('log-students-modal').classList.remove('hidden');
+
+                } catch (error) {
+                    console.error(error);
+                    alert('Error loading students attendance details');
+                }
+            }
+
+            // Close logs modals
+            const logClassesModal = document.getElementById('log-classes-modal');
+            const logStudentsModal = document.getElementById('log-students-modal');
+
+            document.getElementById('close-log-classes-modal').addEventListener('click', () => {
+                logClassesModal.classList.add('hidden');
+            });
+            document.getElementById('close-log-students-modal').addEventListener('click', () => {
+                logStudentsModal.classList.add('hidden');
+            });
+            document.getElementById('log-modal-ok').addEventListener('click', () => {
+                logStudentsModal.classList.add('hidden');
+            });
+            logClassesModal.addEventListener('click', (e) => {
+                if (e.target === logClassesModal) {
+                    logClassesModal.classList.add('hidden');
+                }
+            });
+            logStudentsModal.addEventListener('click', (e) => {
+                if (e.target === logStudentsModal) {
+                    logStudentsModal.classList.add('hidden');
+                }
+            });
+
+            // Export CSV button click listeners
+            document.getElementById('today-modal-export').addEventListener('click', () => {
+                exportAttendanceToCSV(lastTodayAttendanceData, lastTodayClassTitle, lastTodayDateStr);
+            });
+            document.getElementById('log-modal-export').addEventListener('click', () => {
+                exportAttendanceToCSV(lastLogAttendanceData, lastLogClassTitle, lastLogDateStr);
+            });
+
+            // Calendar & My Classes Logic
+            let calendarDate = new Date();
+            let teacherAttendanceRecords = [];
+            let teacherClasses = [];
+
+            async function loadMyClassesCalendar() {
+                try {
+                    const classesRes = await apiFetch('/teacher/my-classes');
+                    if (!classesRes.ok) throw new Error();
+                    const classesData = await classesRes.json();
+                    teacherClasses = classesData.classes;
+
+                    const historyRes = await apiFetch('/teacher/attendance-history');
+                    if (!historyRes.ok) throw new Error();
+                    const historyData = await historyRes.json();
+                    teacherAttendanceRecords = historyData.records;
+
+                    renderTeacherCalendar();
+                } catch (error) {
+                    console.error(error);
+                    alert('Failed to load classes or history details');
+                }
+            }
+
+            function renderTeacherCalendar() {
+                const year = calendarDate.getFullYear();
+                const month = calendarDate.getMonth();
+
+                const firstDayIndex = new Date(year, month, 1).getDay();
+                const lastDay = new Date(year, month + 1, 0).getDate();
+                const prevLastDay = new Date(year, month, 0).getDate();
+
+                const months = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+
+                document.getElementById('current-month-label').textContent = `${months[month]} ${year}`;
+
+                const grid = document.getElementById('calendar-days-grid');
+                grid.innerHTML = '';
+
+                for (let x = firstDayIndex; x > 0; x--) {
+                    grid.innerHTML += `<div class="p-2 text-surface-dim opacity-30 text-body-md text-center">${prevLastDay - x + 1}</div>`;
+                }
+
+                for (let i = 1; i <= lastDay; i++) {
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+
+                    const tempDate = new Date(year, month, i);
+                    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const dayName = daysOfWeek[tempDate.getDay()];
+                    const hasScheduledClasses = teacherClasses.some(c => c.schedule && c.schedule.day === dayName);
+
+                    let dayClass = "p-2 hover:bg-surface-container rounded-lg cursor-pointer transition-colors relative flex flex-col items-center justify-center h-12";
+                    let dotHtml = '';
+
+                    if (hasScheduledClasses) {
+                        dotHtml = '<span class="absolute bottom-1 w-2 h-2 bg-primary rounded-full"></span>';
+                    }
+
+                    grid.innerHTML += `
+                    <div class="${dayClass}" onclick="selectTeacherDate(${year}, ${month}, ${i})">
+                        <span class="text-body-md font-medium">${i}</span>
+                        ${dotHtml}
+                    </div>
+                `;
+                }
+            }
+
+            document.getElementById('prev-month-btn').addEventListener('click', () => {
+                calendarDate.setMonth(calendarDate.getMonth() - 1);
+                renderTeacherCalendar();
+            });
+
+            document.getElementById('next-month-btn').addEventListener('click', () => {
+                calendarDate.setMonth(calendarDate.getMonth() + 1);
+                renderTeacherCalendar();
+            });
+
+            window.selectTeacherDate = function (year, month, day) {
+                const months = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                selectedCalendarDateStr = dateStr;
+                document.getElementById('selected-date-label').textContent = `Class Details on ${months[month]} ${day}, ${year}`;
+
+                const clickedDate = new Date(year, month, day);
+                const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const dayName = daysOfWeek[clickedDate.getDay()];
+
+                const listContainer = document.getElementById('date-classes-list');
+                listContainer.innerHTML = '';
+
+                const scheduledClasses = teacherClasses.filter(c => c.schedule && c.schedule.day === dayName);
+
+                if (scheduledClasses.length === 0) {
+                    listContainer.innerHTML = `<p class="text-on-surface-variant text-body-md italic text-center py-4">No classes scheduled on this day (${dayName}).</p>`;
+                    return;
+                }
+
+                const currentUser = getUser();
+                const teacherName = currentUser ? currentUser.name : 'Dr. John Smith';
+
+                scheduledClasses.forEach(classObj => {
+                    const division = classObj.name || 'B.Tech CS 3rd Year';
+                    const subject = classObj.subject || 'Data Structures';
+                    const department = classObj.department || 'Computer Science';
+                    const time = classObj.schedule ? `${classObj.schedule.startTime} - ${classObj.schedule.endTime}` : '10:00 - 11:00';
+
+                    listContainer.innerHTML += `
+                    <div class="p-lg bg-surface-container rounded-xl border border-outline-variant space-y-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="border-b border-outline-variant pb-2 flex justify-between items-center">
+                            <div>
+                                <span class="text-label-md text-on-surface-variant block uppercase font-bold tracking-wider">Teacher Name</span>
+                                <span class="text-body-md font-bold text-primary">${teacherName}</span>
+                            </div>
+                            <button class="bg-primary text-on-primary text-[11px] font-bold px-3 py-1.5 rounded hover:bg-surface-tint transition-all" onclick="loadTodayClassAttendance('${classObj._id}', true)">
+                                View Attendance
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="border-b border-outline-variant pb-2">
+                                <span class="text-label-md text-on-surface-variant block uppercase font-bold tracking-wider">Subject</span>
+                                <span class="text-body-md font-semibold">${subject}</span>
+                            </div>
+                            <div class="border-b border-outline-variant pb-2">
+                                <span class="text-label-md text-on-surface-variant block uppercase font-bold tracking-wider">Time</span>
+                                <span class="text-body-md font-semibold">${time}</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="pb-1">
+                                <span class="text-label-md text-on-surface-variant block uppercase font-bold tracking-wider">Department</span>
+                                <span class="text-body-md font-semibold">${department}</span>
+                            </div>
+                            <div class="pb-1">
+                                <span class="text-label-md text-on-surface-variant block uppercase font-bold tracking-wider">Division</span>
+                                <span class="text-body-md font-semibold">${division}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                });
+            }
+
+            // Initialize dashboard
+            loadTeacherDashboard();
+
+            // Handle QR Generation
+            document.getElementById('generate-qr-btn').addEventListener('click', async (e) => {
+                const btn = e.currentTarget;
+                const classId = document.getElementById('qr-class-select').value;
+                if (!classId) return alert('No class selected');
+
+                const val = parseFloat(document.getElementById('qr-expiry-value').value) || 5;
+                const unit = document.getElementById('qr-expiry-unit').value;
+                let durationSeconds = val;
+                if (unit === 'minutes') {
+                    durationSeconds = Math.round(val * 60);
+                } else if (unit === 'hours') {
+                    durationSeconds = Math.round(val * 3600);
+                }
+
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = `<span class="material-symbols-outlined animate-spin">progress_activity</span> Generating...`;
+                btn.disabled = true;
+
+                try {
+                    const response = await apiFetch('/teacher/generate-qr', {
+                        method: 'POST',
+                        body: JSON.stringify({ classId, durationSeconds })
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error);
+
+                    const img = document.getElementById('qr-image');
+                    img.src = data.qrCode;
+                    img.classList.remove('opacity-20', 'grayscale');
+
+                    const expirySeconds = Math.floor((data.expiresAt - Date.now()) / 1000);
+                    startQRTimer(expirySeconds > 0 ? expirySeconds : 15, classId);
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Could not generate QR: " + err.message);
+                } finally {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }
+            });
+
+            // Teacher Profile Modal script
+            function getExperience(startDateVal) {
+                if (!startDateVal) return '0 Years, 0 Months, 0 Days';
+                const start = new Date(startDateVal);
+                const end = new Date();
+
+                let years = end.getFullYear() - start.getFullYear();
+                let months = end.getMonth() - start.getMonth();
+                let days = end.getDate() - start.getDate();
+
+                if (days < 0) {
+                    months -= 1;
+                    const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+                    days += prevMonth.getDate();
+                }
+                if (months < 0) {
+                    years -= 1;
+                    months += 12;
+                }
+                return `${years} Years, ${months} Months, ${days} Days`;
+            }
+
+            function updateHeaderProfilePic() {
+                const user = getUser();
+                if (user && user.profilePic) {
+                    const headerImg = document.querySelector('#teacher-profile-trigger img');
+                    if (headerImg) headerImg.src = user.profilePic;
+                } else {
+                    const headerImg = document.querySelector('#teacher-profile-trigger img');
+                    if (headerImg) headerImg.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuDzsQUPHULWXuc27c0paocgfUnpjagR9uXF4dKLYAEil0TxdmtfPbSUcYd5Ngp5voR2HDidnqZduhjfTg6GlbB78mSifVuAQdCzNZf1V833XS-zUHtvSt5uRUssSsuaWmNMA9E1gFyuUFpDua_sLzOiRyGMAP6NZmtpiXc2ZljU4YoJhbFA8nvBTS1kKI9t-zl8-8F-m0-xkozGYMXBc_It4Z14Zloyj6LaVv8ptVC0sHJ4vTcFq5wZw6XuqrpqhxUoQaZ2B6FZQXXJ";
+                }
+            }
+            updateHeaderProfilePic();
+
+            let localStream = null;
+
+            function stopWebcam() {
+                if (localStream) {
+                    localStream.getTracks().forEach(track => track.stop());
+                    localStream = null;
+                }
+                document.getElementById('camera-container').classList.add('hidden');
+                document.getElementById('btn-open-camera').classList.remove('hidden');
+            }
+
+            const profileModal = document.getElementById('teacher-profile-modal');
+            document.getElementById('teacher-profile-trigger').addEventListener('click', () => {
+                const user = getUser();
+                if (user) {
+                    document.getElementById('profile-teacher-name').textContent = user.name || 'Teacher';
+                    document.getElementById('profile-teacher-email').textContent = user.email || 'N/A';
+                    document.getElementById('profile-teacher-dept').textContent = user.department || 'N/A';
+                    document.getElementById('profile-avatar-large').textContent = (user.name || 'TS').substring(0, 2).toUpperCase();
+                    document.getElementById('profile-teacher-experience').textContent = getExperience(user.experienceStartDate);
+
+                    const avatarImg = document.getElementById('profile-avatar-img');
+                    const avatarLarge = document.getElementById('profile-avatar-large');
+                    if (user.profilePic) {
+                        avatarImg.src = user.profilePic;
+                        avatarImg.classList.remove('hidden');
+                        avatarLarge.classList.add('hidden');
+                    } else {
+                        avatarImg.classList.add('hidden');
+                        avatarLarge.classList.remove('hidden');
+                    }
+                }
+                profileModal.classList.remove('hidden');
+            });
+
+            // Open Camera
+            document.getElementById('btn-open-camera').addEventListener('click', async () => {
+                const video = document.getElementById('webcam-video');
+                const cameraContainer = document.getElementById('camera-container');
+                const openCamBtn = document.getElementById('btn-open-camera');
+
+                try {
+                    localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                    video.srcObject = localStream;
+                    cameraContainer.classList.remove('hidden');
+                    openCamBtn.classList.add('hidden');
+                } catch (err) {
+                    alert('Could not access camera: ' + err.message);
+                }
+            });
+
+            // Close Camera
+            document.getElementById('btn-close-camera').addEventListener('click', stopWebcam);
+
+            // Capture Photo
+            document.getElementById('btn-capture-photo').addEventListener('click', async () => {
+                const video = document.getElementById('webcam-video');
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth || 320;
+                canvas.height = video.videoHeight || 240;
+                const ctx = canvas.getContext('2d');
+
+                // Mirror flip for natural selfie look
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                stopWebcam();
+
+                const btn = document.getElementById('btn-capture-photo');
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+
+                try {
+                    const res = await apiFetch('/auth/update-profile-pic', {
+                        method: 'PUT',
+                        body: JSON.stringify({ profilePic: dataUrl })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to save profile picture');
+
+                    // Update local storage
+                    const user = getUser();
+                    user.profilePic = dataUrl;
+                    setUser(user);
+
+                    // Update UI elements
+                    const avatarImg = document.getElementById('profile-avatar-img');
+                    const avatarLarge = document.getElementById('profile-avatar-large');
+                    avatarImg.src = dataUrl;
+                    avatarImg.classList.remove('hidden');
+                    avatarLarge.classList.add('hidden');
+                    updateHeaderProfilePic();
+
+                    alert('Profile picture updated successfully!');
+                } catch (err) {
+                    alert(err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Capture Photo';
+                }
+            });
+
+            document.getElementById('btn-select-file').addEventListener('click', () => {
+                document.getElementById('profile-file-input').click();
+            });
+
+            document.getElementById('profile-file-input').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = async () => {
+                        // Create a 300x300 square cropped canvas
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 300;
+                        canvas.height = 300;
+                        const ctx = canvas.getContext('2d');
+
+                        const size = Math.min(img.width, img.height);
+                        const sourceX = (img.width - size) / 2;
+                        const sourceY = (img.height - size) / 2;
+
+                        ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, 300, 300);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                        try {
+                            const res = await apiFetch('/auth/update-profile-pic', {
+                                method: 'PUT',
+                                body: JSON.stringify({ profilePic: dataUrl })
+                            });
+                            const data = await res.json();
+                            if (!res.ok) throw new Error(data.error || 'Failed to save profile picture');
+
+                            // Update local storage
+                            const user = getUser();
+                            user.profilePic = dataUrl;
+                            setUser(user);
+
+                            // Update UI elements
+                            const avatarImg = document.getElementById('profile-avatar-img');
+                            const avatarLarge = document.getElementById('profile-avatar-large');
+                            avatarImg.src = dataUrl;
+                            avatarImg.classList.remove('hidden');
+                            avatarLarge.classList.add('hidden');
+                            updateHeaderProfilePic();
+
+                            alert('Profile picture updated successfully!');
+                        } catch (err) {
+                            alert(err.message);
+                        }
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            function handleModalClose() {
+                stopWebcam();
+                profileModal.classList.add('hidden');
+            }
+
+            document.getElementById('close-teacher-profile-modal').addEventListener('click', handleModalClose);
+            document.getElementById('profile-ok-btn').addEventListener('click', handleModalClose);
+            profileModal.addEventListener('click', (e) => {
+                if (e.target === profileModal) handleModalClose();
+            });
+
+            // Start New Class Button
+            document.getElementById('btn-start-new-class')?.addEventListener('click', () => {
+                document.getElementById('qr-section').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('qr-class-select').focus();
+            });
+
+            // Notice Board Modal Toggling & Submission
+            const noticeModal = document.getElementById('add-notice-modal');
+            document.getElementById('btn-add-notice')?.addEventListener('click', () => {
+                const user = getUser();
+                const deptSelect = document.getElementById('notice-dept');
+                if (deptSelect) {
+                    // Extract unique departments from activeClassesList
+                    const depts = [...new Set(activeClassesList.map(c => c.department).filter(Boolean))];
+                    
+                    // Always include the teacher's profile department as a default choice
+                    if (user && user.department && !depts.includes(user.department)) {
+                        depts.push(user.department);
+                    }
+                    
+                    if (depts.length === 0) {
+                        deptSelect.innerHTML = `<option value="${user ? user.department : 'All'}">${user ? user.department : 'All Departments'}</option>`;
+                    } else {
+                        deptSelect.innerHTML = depts.map(d => `<option value="${d}">${d}</option>`).join('');
+                    }
+                }
+                
+                document.getElementById('notice-form').reset();
+                // Reset custom target select elements
+                const targetSelect = document.getElementById('notice-target-type');
+                if (targetSelect) {
+                    targetSelect.value = 'ALL';
+                    const studentDiv = document.getElementById('div-notice-student-select');
+                    if (studentDiv) studentDiv.classList.add('hidden');
+                    const studentSelect = document.getElementById('notice-student');
+                    if (studentSelect) {
+                        studentSelect.innerHTML = '<option value="">Select a Student...</option>';
+                        studentSelect.value = '';
+                        studentSelect.required = false;
+                    }
+                }
+                noticeModal.classList.remove('hidden');
+            });
+            document.getElementById('btn-close-notice-modal')?.addEventListener('click', () => noticeModal.classList.add('hidden'));
+            document.getElementById('btn-cancel-notice-modal')?.addEventListener('click', () => noticeModal.classList.add('hidden'));
+            noticeModal?.addEventListener('click', (e) => {
+                if (e.target === noticeModal) noticeModal.classList.add('hidden');
+            });
+
+            window.onNoticeDeptChange = function () {
+                const targetType = document.getElementById('notice-target-type').value;
+                if (targetType === 'STUDENT') {
+                    // Reset student selector options length so toggleNoticeStudentTarget re-fetches with new department
+                    document.getElementById('notice-student').innerHTML = '<option value="">Select a Student...</option>';
+                    toggleNoticeStudentTarget();
+                }
+            };
+
+            window.toggleNoticeStudentTarget = async function () {
+                const targetType = document.getElementById('notice-target-type').value;
+                const studentDiv = document.getElementById('div-notice-student-select');
+                const studentSelect = document.getElementById('notice-student');
+                const selectedDept = document.getElementById('notice-dept').value;
+                if (targetType === 'STUDENT') {
+                    if (studentDiv) studentDiv.classList.remove('hidden');
+                    if (studentSelect) {
+                        studentSelect.required = true;
+                        if (studentSelect.options.length <= 1) {
+                            try {
+                                const res = await apiFetch(`/teacher/students?department=${encodeURIComponent(selectedDept)}`);
+                                if (res.ok) {
+                                    const students = await res.json();
+                                    studentSelect.innerHTML = '<option value="">Select a Student...</option>';
+                                    students.forEach(student => {
+                                        studentSelect.innerHTML += `<option value="${student._id}">${student.name} (${student.rollNo || 'N/A'})</option>`;
+                                    });
+                                }
+                            } catch (err) {
+                                console.error('Failed to load students:', err);
+                            }
+                        }
+                    }
+                } else {
+                    if (studentDiv) studentDiv.classList.add('hidden');
+                    if (studentSelect) {
+                        studentSelect.required = false;
+                        studentSelect.value = '';
+                    }
+                }
+            };
+
+            document.getElementById('notice-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const user = getUser();
+                const targetType = document.getElementById('notice-target-type').value;
+                const targetStudent = targetType === 'STUDENT' ? document.getElementById('notice-student').value : null;
+                const payload = {
+                    title: document.getElementById('notice-title').value,
+                    category: document.getElementById('notice-category').value,
+                    department: user ? user.department : 'All',
+                    content: document.getElementById('notice-content').value,
+                    targetStudent: targetStudent
+                };
+
+                try {
+                    const res = await apiFetch('/auth/notices', {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to post announcement');
+
+                    noticeModal.classList.add('hidden');
+                    e.target.reset();
+                    loadNotices();
+                    loadTeacherDashboard();
+                    alert('Announcement posted successfully!');
+                } catch (err) {
+                    alert(err.message);
+                }
+            });
+
+            // Check Unread Notices Badge
+            async function checkNewNotices() {
+                try {
+                    const res = await apiFetch('/auth/notices');
+                    if (!res.ok) return;
+                    const notices = await res.json();
+                    
+                    const lastRead = parseInt(localStorage.getItem('lastReadNoticesTimestamp') || '0');
+                    const unreadNotices = notices.filter(n => new Date(n.createdAt).getTime() > lastRead);
+                    
+                    const badgeDot = document.getElementById('notice-badge-dot');
+                    const mobileBadgeDot = document.getElementById('mobile-notice-badge-dot');
+                    const badgeCount = document.getElementById('notice-badge-count');
+                    
+                    if (unreadNotices.length > 0) {
+                        if (badgeDot) badgeDot.classList.remove('hidden');
+                        if (mobileBadgeDot) mobileBadgeDot.classList.remove('hidden');
+                        if (badgeCount) {
+                            badgeCount.textContent = unreadNotices.length;
+                            badgeCount.classList.remove('hidden');
+                        }
+                    } else {
+                        if (badgeDot) badgeDot.classList.add('hidden');
+                        if (mobileBadgeDot) mobileBadgeDot.classList.add('hidden');
+                        if (badgeCount) badgeCount.classList.add('hidden');
+                    }
+                } catch (err) {
+                    console.error('Error checking new notices:', err);
+                }
+            }
+            // Poll for new notices every 10 seconds
+            setInterval(checkNewNotices, 10000);
+
+    </script>
+</body>
+
+</html>

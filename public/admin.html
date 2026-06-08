@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EduSync Attendance - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "hsl(172, 80%, 30%)",
+                        "on-primary": "#ffffff",
+                        "primary-container": "hsl(243, 80%, 96%)",
+                        "on-primary-container": "hsl(243, 80%, 25%)",
+                        "secondary": "hsl(150, 80%, 35%)",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "hsl(150, 80%, 96%)",
+                        "on-secondary-container": "hsl(150, 80%, 20%)",
+                        "background": "hsl(215, 15%, 97%)",
+                        "on-background": "hsl(222, 47%, 11%)",
+                        "surface": "#ffffff",
+                        "on-surface": "hsl(222, 47%, 11%)",
+                        "surface-variant": "hsl(215, 15%, 93%)",
+                        "on-surface-variant": "hsl(215, 10%, 40%)",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "hsl(215, 15%, 97%)",
+                        "surface-container": "#ffffff",
+                        "surface-container-high": "hsl(215, 15%, 93%)",
+                        "surface-container-highest": "hsl(215, 10%, 85%)",
+                        "outline": "hsl(215, 10%, 85%)",
+                        "outline-variant": "hsl(215, 12%, 91%)",
+                        "error": "#ef4444",
+                        "on-error": "#ffffff",
+                        "error-container": "#fee2e2",
+                        "on-error-container": "#991b1b",
+                        "tertiary": "hsl(32, 95%, 55%)",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "hsl(32, 95%, 96%)",
+                        "on-tertiary-container": "hsl(32, 95%, 20%)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "container-max": "1280px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                        "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+                        "button-text": ["Plus Jakarta Sans", "sans-serif"],
+                        "label-md": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "button-text": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background-color: hsl(215, 15%, 97%);
+            background-image: 
+                radial-gradient(circle at 0% 0%, hsla(172, 80%, 30%, 0.03) 0%, transparent 35%),
+                radial-gradient(circle at 100% 100%, hsla(243, 75%, 59%, 0.03) 0%, transparent 35%);
+            min-height: max(884px, 100dvh);
+        }
+        button.bg-primary, 
+        input[type="submit"].bg-primary,
+        .btn-primary {
+            background: linear-gradient(135deg, hsl(172, 80%, 30%) 0%, hsl(243, 75%, 59%) 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        button.bg-primary:hover, 
+        input[type="submit"].bg-primary:hover {
+            opacity: 0.95;
+            box-shadow: 0 4px 15px rgba(30, 27, 75, 0.15) !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        input, select, textarea {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Auto Hover Animations for All Cards, Buttons, and Interactive Elements */
+        .bg-surface-container-lowest, 
+        .bg-surface-container-low,
+        .bg-surface,
+        tr.hover\:bg-surface-variant {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .bg-surface-container-lowest:hover,
+        .bg-surface-container-low:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.06), 0 8px 20px -12px rgba(0, 0, 0, 0.02) !important;
+            border-color: rgba(79, 70, 229, 0.25) !important;
+        }
+        
+        button, 
+        input[type="submit"] {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        button:hover,
+        input[type="submit"]:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        button:active,
+        input[type="submit"]:active {
+            transform: translateY(0.5px);
+            scale: 0.98;
+        }
+        
+        aside button,
+        nav a {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        aside button:hover {
+            transform: translateX(4px);
+        }
+
+        input:hover, select:hover, textarea:hover {
+            border-color: #94a3b8 !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            transform: scale(1.002);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1) !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex">
+    <!-- Navigation Drawer (Desktop) -->
+    <aside class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 bg-surface-container-lowest border-r border-outline-variant w-64">
+        <div class="p-lg flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-headline-md" data-icon="school">school</span>
+            <h1 class="text-headline-sm font-bold text-primary">EduSync</h1>
+        </div>
+        <div class="px-4 py-6 flex items-center gap-4 border-b border-outline-variant mb-4">
+            <div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden flex items-center justify-center font-bold text-primary border border-outline-variant bg-surface-container-high">
+                AD
+            </div>
+            <div>
+                <p class="text-body-md font-bold text-on-surface">Academic Portal</p>
+                <p class="text-label-md text-on-surface-variant">Administrator Role</p>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <button id="btn-nav-overview" class="w-full text-left flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 transition-all cursor-pointer" onclick="showView('overview')">
+                <span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+                <span class="text-label-md font-label-md">Overview</span>
+            </button>
+            <button id="btn-nav-students" class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" onclick="showView('students')">
+                <span class="material-symbols-outlined" data-icon="group">group</span>
+                <span class="text-label-md font-label-md">Students Section</span>
+            </button>
+            <button id="btn-nav-teachers" class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" onclick="showView('teachers')">
+                <span class="material-symbols-outlined" data-icon="school">school</span>
+                <span class="text-label-md font-label-md">Faculty Section</span>
+            </button>
+            <button id="btn-nav-timetable" class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" onclick="showView('timetable')">
+                <span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                <span class="text-label-md font-label-md">Timetable</span>
+            </button>
+            <button id="btn-nav-notices" class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" onclick="showView('notices')">
+                <span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+                <span class="text-label-md font-label-md">Announcements</span>
+            </button>
+            <button id="btn-nav-settings" class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" onclick="showView('settings')">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                <span class="text-label-md font-label-md">System Settings</span>
+            </button>
+            <button id="btn-nav-complaints" class="w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" onclick="showView('complaints')">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined relative" data-icon="report_problem">
+                        report_problem
+                        <span id="complaints-badge-dot" class="hidden absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border border-white"></span>
+                    </span>
+                    <span class="text-label-md font-label-md">Complaints</span>
+                </div>
+                <span id="complaints-badge-count" class="hidden bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center">0</span>
+            </button>
+        </nav>
+        <div class="p-4 border-t border-outline-variant text-label-md text-on-surface-variant">
+            <a class="flex items-center gap-2 mb-2 hover:text-error transition-colors" href="login.html">
+                <span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+                <span>Logout</span>
+            </a>
+            <p class="opacity-60 text-[10px]">v2.4.0</p>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 md:ml-64 pb-24 md:pb-8 flex flex-col min-h-screen">
+        <!-- Top App Bar -->
+        <header class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-desktop py-4 bg-surface-container-lowest border-b border-outline-variant shadow-sm max-w-container-max mx-auto">
+            <h2 class="text-headline-md font-bold text-primary">EduSync Admin Dashboard</h2>
+            <div class="flex items-center gap-4">
+                <button class="p-2 hover:bg-surface-container-low rounded-full transition-all">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-secondary-fixed-dim flex items-center justify-center font-bold text-on-secondary-fixed">
+                    AD
+                </div>
+            </div>
+        </header>
+
+        <div class="px-margin-mobile md:px-margin-desktop mt-8 max-w-container-max mx-auto flex-1 w-full">
+            
+            <!-- VIEW: OVERVIEW -->
+            <div id="view-overview" class="space-y-lg">
+                <!-- Bento Grid Header: Overview Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-gutter mb-8">
+                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-lg" data-icon="groups">groups</span>
+                            <span class="text-secondary text-label-md font-bold">+2.4%</span>
+                        </div>
+                        <p class="text-label-md text-on-surface-variant">Total Students</p>
+                        <h3 id="stat-students" class="text-headline-md">--</h3>
+                    </div>
+                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="material-symbols-outlined text-tertiary bg-tertiary-fixed p-2 rounded-lg" data-icon="person">person</span>
+                            <span class="text-on-surface-variant text-label-md font-bold">Stable</span>
+                        </div>
+                        <p class="text-label-md text-on-surface-variant">Total Teachers</p>
+                        <h3 id="stat-teachers" class="text-headline-md">--</h3>
+                    </div>
+                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-lg" data-icon="calendar_today">calendar_today</span>
+                        </div>
+                        <p class="text-label-md text-on-surface-variant">Classes Today</p>
+                        <h3 id="stat-classes" class="text-headline-md">--</h3>
+                    </div>
+                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="material-symbols-outlined text-secondary bg-secondary-fixed p-2 rounded-lg" data-icon="monitoring">monitoring</span>
+                            <span class="text-secondary text-label-md font-bold">+5.1%</span>
+                        </div>
+                        <p class="text-label-md text-on-surface-variant">Avg Attendance %</p>
+                        <h3 id="stat-attendance" class="text-headline-md">--%</h3>
+                    </div>
+                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="material-symbols-outlined text-error bg-error-container p-2 rounded-lg" data-icon="report_problem">report_problem</span>
+                        </div>
+                        <p class="text-label-md text-on-surface-variant">Pending Complaints</p>
+                        <h3 id="stat-pending-complaints" class="text-headline-md">--</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                    <!-- Attendance Trends Chart -->
+                    <div class="lg:col-span-2 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-headline-sm">Weekly Attendance Trends</h4>
+                            <div class="flex gap-2">
+                                <span class="flex items-center gap-1 text-label-md text-on-surface-variant">
+                                    <span class="w-3 h-3 rounded-full bg-primary"></span> Current Week
+                                </span>
+                            </div>
+                        </div>
+                        <div class="h-64 flex items-end justify-between gap-2 px-2">
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 92%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Mon</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 88%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Tue</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 95%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Wed</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 91%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Thu</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 78%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Fri</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 35%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Sat</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 20%;"></div>
+                                <span class="text-label-md text-on-surface-variant">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Low Attendance Alerts -->
+                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col">
+                        <h4 class="text-headline-sm mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+                            Alerts
+                        </h4>
+                        <div id="alerts-container" class="space-y-4 flex-1 custom-scrollbar overflow-y-auto max-h-64">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Risk Profiling Section -->
+                <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden mt-8">
+                    <div class="p-lg border-b border-outline-variant flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div>
+                            <h4 class="text-headline-sm flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[24px]" data-icon="troubleshoot">troubleshoot</span>
+                                Student Risk Profiling & Dropout Prevention
+                            </h4>
+                            <p class="text-label-md text-on-surface-variant">Real-time analysis of student academic drop-out risks using machine learning metrics based on attendance, complaint volume, engagement, and peer gap.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button id="btn-trigger-alerts" onclick="triggerWeeklyAlerts()" class="bg-primary text-on-primary px-3 py-2 rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all text-xs shadow-sm">
+                                <span class="material-symbols-outlined text-[16px]" data-icon="notifications_active">notifications_active</span>
+                                Trigger Weekly Alerts
+                            </button>
+                            <div>
+                                <select id="filter-risk-level" onchange="filterRiskList()" class="border border-outline-variant rounded-lg p-2 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                                    <option value="All">All Risk Levels</option>
+                                    <option value="HIGH">High Risk</option>
+                                    <option value="MEDIUM">Medium Risk</option>
+                                    <option value="LOW">Low Risk</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type="text" id="search-risk-query" oninput="filterRiskList()" placeholder="Search student..." class="border border-outline-variant rounded-lg p-2 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-surface-container-low text-on-surface-variant text-label-md uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-lg py-4 font-semibold">Student</th>
+                                    <th class="px-lg py-4 font-semibold">Risk Score</th>
+                                    <th class="px-lg py-4 font-semibold">Attendance Rate</th>
+                                    <th class="px-lg py-4 font-semibold">Complaints</th>
+                                    <th class="px-lg py-4 font-semibold">Engagement Score</th>
+                                    <th class="px-lg py-4 font-semibold">Assignment Avg / Gap</th>
+                                    <th class="px-lg py-4 font-semibold">Status</th>
+                                    <th class="px-lg py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="risk-table-body" class="divide-y divide-outline-variant">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: STUDENTS -->
+            <div id="view-students" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                    <div class="p-lg border-b border-outline-variant flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div>
+                            <h4 class="text-headline-sm">Student Directory</h4>
+                            <p class="text-label-md text-on-surface-variant">Manage enrolled students, filter by department & division, or add new profiles.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button onclick="openAddUserModal('student')" class="bg-primary text-on-primary px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+                                Add New Student
+                            </button>
+                            <button onclick="openCsvModal()" class="bg-surface-container-low border border-outline-variant text-on-surface-variant px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:bg-surface-container transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="upload_file">upload_file</span>
+                                Bulk Import (CSV)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="p-lg bg-surface-container-low/50 border-b border-outline-variant grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Filter by Department</label>
+                            <select id="filter-student-dept" onchange="filterStudentsList()" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                                <option value="All">All Departments</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Filter by Division (Class Name)</label>
+                            <select id="filter-student-class" onchange="filterStudentsList()" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                                <option value="All">All Divisions</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Search Student</label>
+                            <input type="text" id="search-student-query" oninput="filterStudentsList()" placeholder="Search by name, roll no, email..." class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-surface-container-low text-on-surface-variant text-label-md uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-lg py-4 font-semibold">Roll No</th>
+                                    <th class="px-lg py-4 font-semibold">Name</th>
+                                    <th class="px-lg py-4 font-semibold">Department</th>
+                                    <th class="px-lg py-4 font-semibold">Email</th>
+                                    <th class="px-lg py-4 font-semibold">Phone</th>
+                                    <th class="px-lg py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-table-body" class="divide-y divide-outline-variant">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: TEACHERS -->
+            <div id="view-teachers" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                    <div class="p-lg border-b border-outline-variant flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div>
+                            <h4 class="text-headline-sm">Faculty Directory</h4>
+                            <p class="text-label-md text-on-surface-variant">View and manage college teachers and instructors.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button onclick="openAddUserModal('teacher')" class="bg-primary text-on-primary px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+                                Add New Teacher
+                            </button>
+                            <button onclick="openCsvModal()" class="bg-surface-container-low border border-outline-variant text-on-surface-variant px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:bg-surface-container transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="upload_file">upload_file</span>
+                                Bulk Import (CSV)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="p-lg bg-surface-container-low/50 border-b border-outline-variant grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Filter by Department</label>
+                            <select id="filter-teacher-dept" onchange="filterTeachersList()" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                                <option value="All">All Departments</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Search Faculty</label>
+                            <input type="text" id="search-teacher-query" oninput="filterTeachersList()" placeholder="Search by name, email..." class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-surface-container-low text-on-surface-variant text-label-md uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-lg py-4 font-semibold">Name</th>
+                                    <th class="px-lg py-4 font-semibold">Department</th>
+                                    <th class="px-lg py-4 font-semibold">Email</th>
+                                    <th class="px-lg py-4 font-semibold">Phone</th>
+                                    <th class="px-lg py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachers-table-body" class="divide-y divide-outline-variant">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: TIMETABLE -->
+            <div id="view-timetable" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                    <div class="p-lg border-b border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h4 class="text-headline-sm">Manage Timetable</h4>
+                            <p class="text-label-md text-on-surface-variant">Excel-style weekly grid of all scheduled classes and time slots</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button id="btn-upload-timetable" class="bg-surface-container-low border border-outline-variant text-on-surface-variant px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:bg-surface-container transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="upload_file">upload_file</span>
+                                Upload Timetable CSV
+                            </button>
+                            <button id="btn-add-class" class="bg-primary text-on-primary px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+                                Add Timetable Entry
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Bar -->
+                    <div class="p-lg bg-surface-container-low/50 border-b border-outline-variant grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Filter by Department</label>
+                            <select id="filter-timetable-dept" onchange="renderGridTimetable()" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                                <option value="All">All Departments</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-label-md font-bold text-on-surface-variant mb-1">Filter by Division (Class Name)</label>
+                            <select id="filter-timetable-class" onchange="renderGridTimetable()" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-lowest text-body-md outline-none focus:border-primary">
+                                <option value="All">All Divisions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Excel-style Timetable Grid -->
+                    <div id="timetable-grid-container" class="overflow-x-auto p-lg custom-scrollbar">
+                        <!-- Populated dynamically as an Excel-like grid -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: NOTICES -->
+            <div id="view-notices" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                    <div class="p-lg border-b border-outline-variant flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h4 class="text-headline-sm">Manage Announcements</h4>
+                            <p class="text-label-md text-on-surface-variant">Notice board events, half-day warnings, or rescheduling alerts</p>
+                        </div>
+                        <button id="btn-add-notice" class="bg-primary text-on-primary px-4 py-2 rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="campaign">campaign</span>
+                            Post Announcement
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-surface-container-low text-on-surface-variant text-label-md uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-lg py-4 font-semibold">Title</th>
+                                    <th class="px-lg py-4 font-semibold">Category</th>
+                                    <th class="px-lg py-4 font-semibold">Department</th>
+                                    <th class="px-lg py-4 font-semibold">Date Posted</th>
+                                    <th class="px-lg py-4 font-semibold">Posted By</th>
+                                    <th class="px-lg py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notices-table-body" class="divide-y divide-outline-variant">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SETTINGS -->
+            <div id="view-settings" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+                    <h4 class="text-headline-sm mb-6 font-bold text-primary">System Control Panel</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-6">
+                        <div class="space-y-2">
+                            <label class="text-label-md font-bold text-on-surface-variant">Attendance Threshold (%)</label>
+                            <input id="input-threshold" class="w-full border border-outline-variant rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="75" type="number"/>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-label-md font-bold text-on-surface-variant">QR Expiry (Seconds)</label>
+                            <input id="input-qr-expiry" class="w-full border border-outline-variant rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="30" type="number"/>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-label-md font-bold text-on-surface-variant">GPS Tolerance (Meters)</label>
+                            <input id="input-gps" class="w-full border border-outline-variant rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="50" type="number"/>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-label-md font-bold text-on-surface-variant">Institution WiFi SSID</label>
+                            <input id="input-wifi" class="w-full border border-outline-variant rounded-lg p-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Campus_Secure_5G" type="text"/>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 border-t border-outline-variant pt-4">
+                        <button id="btn-apply-settings" class="px-6 py-2.5 bg-secondary text-on-secondary rounded-lg font-button-text hover:opacity-90 active:scale-95 shadow-sm transition-all">Apply Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: COMPLAINTS -->
+            <div id="view-complaints" class="hidden space-y-lg">
+                <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                    <div class="p-lg border-b border-outline-variant flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h4 class="text-headline-sm">Student & Faculty Complaints</h4>
+                            <p class="text-label-md text-on-surface-variant">Review and resolve issues raised by students and teachers.</p>
+                        </div>
+                        <div class="flex items-center gap-4 self-stretch sm:self-auto">
+                            <div class="flex items-center gap-2">
+                                <label for="filter-complaints-status" class="text-xs font-bold text-on-surface-variant whitespace-nowrap">Filter Status:</label>
+                                <select id="filter-complaints-status" onchange="loadAdminComplaints()" class="border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-container-low text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer">
+                                    <option value="All">All</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Resolved">Resolved</option>
+                                </select>
+                            </div>
+                            <span class="material-symbols-outlined text-primary text-[40px] bg-primary/10 p-3 rounded-full hidden sm:inline-block" data-icon="report_problem">report_problem</span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-surface-container-low text-on-surface-variant text-label-md uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-lg py-4 font-semibold">Sender</th>
+                                    <th class="px-lg py-4 font-semibold">Role</th>
+                                    <th class="px-lg py-4 font-semibold">Subject</th>
+                                    <th class="px-lg py-4 font-semibold">Message</th>
+                                    <th class="px-lg py-4 font-semibold">Date</th>
+                                    <th class="px-lg py-4 font-semibold">Status</th>
+                                    <th class="px-lg py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complaints-table-body" class="divide-y divide-outline-variant">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Nav Bar (Mobile Only) -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile py-2 md:hidden bg-surface-container-lowest border-t border-outline-variant shadow-lg rounded-t-xl">
+        <a id="btn-nav-mob-overview" class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 duration-150 scale-90 cursor-pointer" onclick="showView('overview')">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span class="text-label-md">Overview</span>
+        </a>
+        <a id="btn-nav-mob-students" class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container cursor-pointer" onclick="showView('students')">
+            <span class="material-symbols-outlined" data-icon="group">group</span>
+            <span class="text-label-md">Students</span>
+        </a>
+        <a id="btn-nav-mob-teachers" class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container cursor-pointer" onclick="showView('teachers')">
+            <span class="material-symbols-outlined" data-icon="school">school</span>
+            <span class="text-label-md">Faculty</span>
+        </a>
+        <a id="btn-nav-mob-complaints" class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container cursor-pointer relative" onclick="showView('complaints')">
+            <span class="material-symbols-outlined relative" data-icon="report_problem">
+                report_problem
+                <span id="mobile-complaints-badge-dot" class="hidden absolute top-0 right-0 w-2 h-2 bg-error rounded-full border border-white"></span>
+            </span>
+            <span class="text-label-md">Complaints</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container cursor-pointer" href="login.html">
+            <span class="material-symbols-outlined" data-icon="logout">logout</span>
+            <span class="text-label-md">Logout</span>
+        </a>
+    </nav>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                <h3 id="add-user-modal-title" class="text-headline-sm font-bold text-primary">Add New User</h3>
+                <button id="btn-close-modal" class="text-on-surface-variant hover:text-error transition-colors">
+                    <span class="material-symbols-outlined" data-icon="close">close</span>
+                </button>
+            </div>
+            <form id="add-user-form" class="p-6 space-y-4">
+                <div id="form-error" class="hidden text-error text-label-md bg-error-container p-2 rounded"></div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Full Name</label>
+                    <input type="text" id="user-name" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Email</label>
+                    <input type="email" id="user-email" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">Role</label>
+                        <select id="user-role" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none bg-transparent">
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">Roll No (if student)</label>
+                        <input type="text" id="user-roll" class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                    </div>
+                </div>
+                <div id="teacher-experience-fields" class="hidden border border-outline-variant rounded-lg p-3 bg-surface-container-low space-y-2">
+                    <span class="block text-label-md font-bold text-on-surface-variant mb-1">Initial Experience</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-semibold text-on-surface-variant">Years</label>
+                            <input type="number" id="user-exp-years" min="0" value="0" class="w-full border border-outline-variant rounded p-1 text-xs outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-on-surface-variant">Months</label>
+                            <input type="number" id="user-exp-months" min="0" max="11" value="0" class="w-full border border-outline-variant rounded p-1 text-xs outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-on-surface-variant">Days</label>
+                            <input type="number" id="user-exp-days" min="0" max="30" value="0" class="w-full border border-outline-variant rounded p-1 text-xs outline-none">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Department</label>
+                    <input type="text" id="user-dept" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Phone Number</label>
+                    <input type="text" id="user-phone" class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none" placeholder="e.g. +1234567890">
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Temporary Password</label>
+                    <input type="password" id="user-pwd" required minlength="6" class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant">
+                    <button type="button" id="btn-cancel-modal" class="px-4 py-2.5 border border-outline text-on-surface-variant rounded-lg font-button-text">Cancel</button>
+                    <button type="submit" id="btn-submit-user" class="px-4 py-2.5 bg-primary text-on-primary rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[18px]">person_add</span> Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CSV Upload Modal -->
+    <div id="csv-upload-modal" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                <h3 class="text-headline-sm font-bold text-primary">Bulk Upload Users</h3>
+                <button id="btn-close-csv-modal" class="text-on-surface-variant hover:text-error transition-colors">
+                    <span class="material-symbols-outlined" data-icon="close">close</span>
+                </button>
+            </div>
+            <form id="csv-upload-form" class="p-6 space-y-4">
+                <div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant text-label-md text-on-surface-variant mb-4">
+                    <strong>Required CSV format:</strong> <code>name, email, role, department, rollNo, phone, expYears, expMonths, expDays</code>
+                    <br><br>
+                    <em>Note: All imported users will have a default password of <code>password123</code>. Experience fields are only used if the role is <code>teacher</code>.</em>
+                </div>
+                <div id="csv-form-error" class="hidden text-error text-label-md bg-error-container p-2 rounded"></div>
+                <div id="csv-form-success" class="hidden text-secondary text-label-md bg-secondary-container p-2 rounded"></div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Select CSV File</label>
+                    <input type="file" id="csv-file-input" accept=".csv" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant">
+                    <button type="button" id="btn-cancel-csv-modal" class="px-4 py-2.5 border border-outline text-on-surface-variant rounded-lg font-button-text">Cancel</button>
+                    <button type="submit" id="btn-submit-csv" class="px-4 py-2.5 bg-primary text-on-primary rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[18px]">upload</span> Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Timetable Modal -->
+    <div id="add-class-modal" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                <h3 class="text-headline-sm font-bold text-primary" id="class-modal-title">Add Timetable Entry</h3>
+                <button id="btn-close-class-modal" class="text-on-surface-variant hover:text-error transition-colors">
+                    <span class="material-symbols-outlined" data-icon="close">close</span>
+                </button>
+            </div>
+            <form id="add-class-form" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="class-id" value="">
+                <div id="class-form-error" class="hidden text-error text-label-md bg-error-container p-2 rounded"></div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Class / Division Name</label>
+                    <input type="text" id="class-name" placeholder="e.g. B.Tech CS 3rd Year" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Subject</label>
+                    <input type="text" id="class-subject" placeholder="e.g. Algorithms" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Teacher</label>
+                    <select id="class-teacher" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none bg-transparent">
+                        <option value="">Select a Teacher</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Department</label>
+                    <input type="text" id="class-dept" placeholder="e.g. Computer Science" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">Semester</label>
+                        <input type="number" id="class-semester" min="1" max="8" value="1" required class="w-full border border-outline-variant rounded-lg p-2 text-body-md focus:border-primary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">Room</label>
+                        <input type="text" id="class-room" placeholder="Lab 1" required class="w-full border border-outline-variant rounded-lg p-2 text-body-md focus:border-primary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">Capacity</label>
+                        <input type="number" id="class-capacity" value="60" required class="w-full border border-outline-variant rounded-lg p-2 text-body-md focus:border-primary outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Day of the Week</label>
+                    <select id="class-day" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none bg-transparent">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">Start Time</label>
+                        <input type="time" id="class-starttime" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-label-md font-bold text-on-surface-variant mb-1">End Time</label>
+                        <input type="time" id="class-endtime" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant">
+                    <button type="button" id="btn-cancel-class-modal" class="px-4 py-2.5 border border-outline text-on-surface-variant rounded-lg font-button-text">Cancel</button>
+                    <button type="submit" id="btn-submit-class" class="px-4 py-2.5 bg-primary text-on-primary rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[18px]">add_circle</span> Create Entry
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Timetable Upload Modal -->
+    <div id="timetable-upload-modal" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                <h3 class="text-headline-sm font-bold text-primary">Bulk Upload Timetable</h3>
+                <button id="btn-close-timetable-modal" class="text-on-surface-variant hover:text-error transition-colors">
+                    <span class="material-symbols-outlined" data-icon="close">close</span>
+                </button>
+            </div>
+            <form id="timetable-upload-form" class="p-6 space-y-4">
+                <div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant text-label-md text-on-surface-variant mb-4 max-h-48 overflow-y-auto custom-scrollbar">
+                    <strong>Required CSV format:</strong> 
+                    <code class="block bg-surface-container-lowest p-2 rounded mt-1 overflow-x-auto">name, subject, teacherEmail, department, day, startTime, endTime, room, capacity, semester</code>
+                    <br>
+                    <em>Ensure teacher emails exist in the user database before uploading.</em>
+                </div>
+                <div id="timetable-form-error" class="hidden text-error text-label-md bg-error-container p-2 rounded"></div>
+                <div id="timetable-form-success" class="hidden text-secondary text-label-md bg-secondary-container p-2 rounded"></div>
+                <div>
+                    <label class="block text-label-md font-bold text-on-surface-variant mb-1">Select CSV File</label>
+                    <input type="file" id="timetable-file-input" accept=".csv" required class="w-full border border-outline-variant rounded-lg p-2.5 text-body-md focus:border-primary outline-none">
+                </div>
+                <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant">
+                    <button type="button" id="btn-cancel-timetable-modal" class="px-4 py-2.5 border border-outline text-on-surface-variant rounded-lg font-button-text">Cancel</button>
+                    <button type="submit" id="btn-submit-timetable" class="px-4 py-2.5 bg-primary text-on-primary rounded-lg font-button-text flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[18px]">upload</span> Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Notice Modal -->
+    <div id="add-notice-modal" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                <h3 class="text-headline-sm font-bold text-primary">Post Announcement</h3>
+                <button id="btn-close-notice-modal" class="text-on-surface-variant hover:text-error transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="notice-form" class="p-6 space-y-4">
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Notice Title</label>
+                    <input type="text" id="notice-title" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all" placeholder="e.g. Guest Lecture on Quantum Computing">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-label-md font-semibold text-on-surface-variant">Category</label>
+                        <select id="notice-category" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                            <option value="General">General</option>
+                            <option value="Event">Event</option>
+                            <option value="Class Reschedule">Class Reschedule</option>
+                            <option value="Holiday">Holiday</option>
+                            <option value="Exam">Exam</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-label-md font-semibold text-on-surface-variant">Target Department</label>
+                        <select id="notice-dept" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                            <option value="All">All Departments</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics">Electronics</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Send Notice To Recipient Options -->
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Send Notice To</label>
+                    <select id="notice-target-type" onchange="toggleAdminNoticeTarget()" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                        <option value="ALL">Everyone (Public)</option>
+                        <option value="ALL_STUDENTS">All Students (Public to Students)</option>
+                        <option value="ALL_TEACHERS">All Teachers (Public to Teachers)</option>
+                        <option value="STUDENT">Specific Student (Private)</option>
+                        <option value="TEACHER">Specific Teacher (Private)</option>
+                    </select>
+                </div>
+                <div id="div-admin-notice-student" class="hidden space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Select Student</label>
+                    <select id="notice-student" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                        <option value="">Select Student...</option>
+                    </select>
+                </div>
+                <div id="div-admin-notice-teacher" class="hidden space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Select Teacher (Faculty)</label>
+                    <select id="notice-teacher" class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                        <option value="">Select Teacher...</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Content / Description</label>
+                    <textarea id="notice-content" rows="4" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all" placeholder="Enter detailed notice content here..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant">
+                    <button type="button" id="btn-cancel-notice-modal" class="px-4 py-2 border border-outline text-on-surface-variant rounded-lg font-button-text hover:bg-surface-container transition-all">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-on-primary rounded-lg font-button-text hover:opacity-90 active:scale-95 transition-all">Post Notice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Intervention Modal -->
+    <div id="intervention-modal" class="hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+                <h3 class="text-headline-sm font-bold text-primary">Assign Intervention</h3>
+                <button id="btn-close-intervention-modal" type="button" class="text-on-surface-variant hover:text-error transition-colors" onclick="closeInterventionModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="intervention-form" class="p-6 space-y-4">
+                <input type="hidden" id="intervention-student-id">
+                
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Student</label>
+                    <input type="text" id="intervention-student-name" readonly disabled class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md opacity-75 outline-none">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Intervention Type</label>
+                    <select id="intervention-type" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                        <option value="ACADEMIC_SUPPORT">Academic Support (Extra Classes)</option>
+                        <option value="MENTORSHIP">Mentorship Program</option>
+                        <option value="PARENTAL_MEETING">Parental Meeting</option>
+                        <option value="COUNSELING">Counseling Session</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Assign Mentor (Faculty)</label>
+                    <select id="intervention-mentor" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                        <option value="">Select a Faculty Member</option>
+                        <!-- Populated dynamically from allTeachers -->
+                    </select>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Target Date</label>
+                    <input type="date" id="intervention-target-date" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-label-md font-semibold text-on-surface-variant">Description & Goals</label>
+                    <textarea id="intervention-desc" rows="4" required class="w-full border border-outline-variant rounded-lg p-2.5 bg-surface-container-low text-body-md focus:border-primary outline-none transition-all" placeholder="Explain details of the intervention, goals to achieve, etc..."></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant">
+                    <button type="button" class="px-4 py-2 border border-outline text-on-surface-variant rounded-lg font-button-text hover:bg-surface-container transition-all" onclick="closeInterventionModal()">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-on-primary rounded-lg font-button-text hover:opacity-90 active:scale-95 transition-all">Assign Intervention</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        if (!getToken()) {
+            window.location.href = 'login.html';
+        }
+
+        // Premium Toast System
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'fixed bottom-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg border text-sm font-semibold pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ${
+                type === 'success' 
+                    ? 'bg-secondary-container text-on-secondary-container border-secondary/20' 
+                    : 'bg-error-container text-error border-error/20'
+            }`;
+            
+            const icon = type === 'success' ? 'check_circle' : 'error';
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-[20px]">${icon}</span>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+            
+            // Auto dismiss
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        // Global state for users lists
+        let allStudents = [];
+        let allTeachers = [];
+        let allRiskScores = [];
+        window.highlightQuery = '';
+        window.highlightTeacherQuery = '';
+
+
+        // View Toggling logic
+        function showView(viewName) {
+            const views = ['overview', 'students', 'teachers', 'timetable', 'notices', 'settings', 'complaints'];
+            views.forEach(v => {
+                const element = document.getElementById(`view-${v}`);
+                if (element) {
+                    element.classList.add('hidden');
+                }
+                
+                // Desktop nav classes
+                const navBtn = document.getElementById(`btn-nav-${v}`);
+                if (navBtn) {
+                    navBtn.className = "w-full text-left flex items-center gap-3 text-on-surface-variant px-4 py-3 mx-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer";
+                }
+
+                // Mobile nav classes
+                const mobBtn = document.getElementById(`btn-nav-mob-${v}`);
+                if (mobBtn) {
+                    mobBtn.className = "flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container cursor-pointer";
+                }
+            });
+
+            const currentViewElement = document.getElementById(`view-${viewName}`);
+            if (currentViewElement) {
+                currentViewElement.classList.remove('hidden');
+            }
+
+            const currentNavBtn = document.getElementById(`btn-nav-${viewName}`);
+            if (currentNavBtn) {
+                currentNavBtn.className = "w-full text-left flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 transition-all cursor-pointer";
+            }
+
+            const currentMobBtn = document.getElementById(`btn-nav-mob-${viewName}`);
+            if (currentMobBtn) {
+                currentMobBtn.className = "flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 duration-150 cursor-pointer";
+            }
+            
+            if (viewName === 'overview') {
+                loadAdminDashboard();
+            } else if (viewName === 'complaints') {
+                loadAdminComplaints();
+            }
+        }
+
+        async function loadAdminDashboard() {
+            try {
+                // Fetch Dashboard Data
+                const resDash = await apiFetch('/admin/dashboard');
+                if (resDash.ok) {
+                    const data = await resDash.json();
+                    document.getElementById('stat-students').textContent = data.totalStudents;
+                    document.getElementById('stat-teachers').textContent = data.totalTeachers;
+                    document.getElementById('stat-classes').textContent = data.classesToday;
+                    document.getElementById('stat-attendance').textContent = data.avgAttendance + '%';
+
+                    // Populate pending complaints count
+                    const pendingCount = data.pendingComplaintsCount || 0;
+                    document.getElementById('stat-pending-complaints').textContent = pendingCount;
+
+                    // Update complaints navigation badges
+                    const complaintsBadgeDot = document.getElementById('complaints-badge-dot');
+                    const complaintsBadgeCount = document.getElementById('complaints-badge-count');
+                    const mobComplaintsBadgeDot = document.getElementById('mobile-complaints-badge-dot');
+
+                    if (pendingCount > 0) {
+                        if (complaintsBadgeDot) complaintsBadgeDot.classList.remove('hidden');
+                        if (complaintsBadgeCount) {
+                            complaintsBadgeCount.textContent = pendingCount;
+                            complaintsBadgeCount.classList.remove('hidden');
+                        }
+                        if (mobComplaintsBadgeDot) mobComplaintsBadgeDot.classList.remove('hidden');
+                    } else {
+                        if (complaintsBadgeDot) complaintsBadgeDot.classList.add('hidden');
+                        if (complaintsBadgeCount) complaintsBadgeCount.classList.add('hidden');
+                        if (mobComplaintsBadgeDot) mobComplaintsBadgeDot.classList.add('hidden');
+                    }
+
+                    const alertsContainer = document.getElementById('alerts-container');
+                    alertsContainer.innerHTML = '';
+                    if (data.lowAttendanceAlerts && data.lowAttendanceAlerts.length > 0) {
+                        data.lowAttendanceAlerts.forEach(alert => {
+                            const initials = alert.name.substring(0, 2).toUpperCase();
+                            alertsContainer.innerHTML += `
+                                <div class="flex items-center gap-4 p-3 bg-error-container/30 border border-error/20 rounded-lg animate-[fadeIn_0.2s_ease-out]">
+                                    <div class="w-10 h-10 rounded-full bg-error text-on-error flex items-center justify-center font-bold">${initials}</div>
+                                    <div class="flex-1">
+                                        <p class="text-body-md font-bold">${alert.name} <span class="text-[10px] text-on-surface-variant">(${alert.rollNo})</span></p>
+                                        <p class="text-label-md text-error font-semibold">Attendance: ${alert.attendance}</p>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        alertsContainer.innerHTML = '<p class="text-label-md text-on-surface-variant text-center p-4">No low attendance alerts.</p>';
+                    }
+                }
+
+                // Fetch Classes
+                const resClasses = await apiFetch('/admin/classes');
+                let classes = [];
+                if (resClasses.ok) {
+                    classes = await resClasses.json();
+                    window.adminClassesList = classes; // store globally
+                    
+                    // Build dynamic filters for Timetable view
+                    const timetableDepts = [...new Set(classes.map(c => c.department).filter(Boolean))];
+                    const tDeptSelect = document.getElementById('filter-timetable-dept');
+                    const savedTDept = tDeptSelect ? tDeptSelect.value : 'All';
+                    if (tDeptSelect) {
+                        tDeptSelect.innerHTML = '<option value="All">All Departments</option>';
+                        timetableDepts.forEach(dept => {
+                            tDeptSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+                        });
+                        tDeptSelect.value = savedTDept;
+                    }
+
+                    const timetableDivisions = [...new Set(classes.map(c => c.name).filter(Boolean))];
+                    const tClassSelect = document.getElementById('filter-timetable-class');
+                    const savedTClass = tClassSelect ? tClassSelect.value : 'All';
+                    if (tClassSelect) {
+                        tClassSelect.innerHTML = '<option value="All">All Divisions</option>';
+                        timetableDivisions.forEach(div => {
+                            tClassSelect.innerHTML += `<option value="${div}">${div}</option>`;
+                        });
+                        tClassSelect.value = savedTClass;
+                    }
+
+                    renderGridTimetable();
+                }
+
+                // Fetch Users
+                const resUsers = await apiFetch('/admin/users');
+                if (resUsers.ok) {
+                    const users = await resUsers.json();
+                    
+                    // Split users into students and teachers
+                    allStudents = users.filter(u => u.role === 'student');
+                    allTeachers = users.filter(u => u.role === 'teacher');
+
+                    // Build dynamic filters for Students view
+                    const departments = [...new Set(allStudents.map(s => s.department).filter(Boolean))];
+                    const studentDeptSelect = document.getElementById('filter-student-dept');
+                    studentDeptSelect.innerHTML = '<option value="All">All Departments</option>';
+                    departments.forEach(dept => {
+                        studentDeptSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+                    });
+
+                    const divisions = [...new Set(classes.map(c => c.name).filter(Boolean))];
+                    const studentClassSelect = document.getElementById('filter-student-class');
+                    studentClassSelect.innerHTML = '<option value="All">All Divisions</option>';
+                    divisions.forEach(div => {
+                        studentClassSelect.innerHTML += `<option value="${div}">${div}</option>`;
+                    });
+
+                    // Build dynamic filters for Teachers view
+                    const teacherDepts = [...new Set(allTeachers.map(t => t.department).filter(Boolean))];
+                    const teacherDeptSelect = document.getElementById('filter-teacher-dept');
+                    const savedTeacherDept = teacherDeptSelect ? teacherDeptSelect.value : 'All';
+                    if (teacherDeptSelect) {
+                        teacherDeptSelect.innerHTML = '<option value="All">All Departments</option>';
+                        teacherDepts.forEach(dept => {
+                            teacherDeptSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+                        });
+                        // Try to restore saved value
+                        if (teacherDepts.includes(savedTeacherDept)) {
+                            teacherDeptSelect.value = savedTeacherDept;
+                        } else {
+                            teacherDeptSelect.value = 'All';
+                        }
+                    }
+
+                    // Render both lists (preserving active filters/queries)
+                    const searchStudentQ = document.getElementById('search-student-query');
+                    if (document.getElementById('filter-student-dept').value !== 'All' || 
+                        document.getElementById('filter-student-class').value !== 'All' || 
+                        (searchStudentQ && searchStudentQ.value.trim() !== '')) {
+                        filterStudentsList();
+                    } else {
+                        renderStudentsList();
+                    }
+
+                    const searchTeacherQ = document.getElementById('search-teacher-query');
+                    if (teacherDeptSelect && (teacherDeptSelect.value !== 'All' || 
+                        (searchTeacherQ && searchTeacherQ.value.trim() !== ''))) {
+                        filterTeachersList();
+                    } else {
+                        renderTeachersList();
+                    }
+
+                }
+
+                // Fetch Settings
+                const resSettings = await apiFetch('/admin/settings');
+                if (resSettings.ok) {
+                    const config = await resSettings.json();
+                    if(config) {
+                        document.getElementById('input-threshold').value = config.attendanceThreshold || '';
+                        document.getElementById('input-qr-expiry').value = config.qrExpirySeconds || '';
+                        document.getElementById('input-gps').value = config.location?.radius || '';
+                        document.getElementById('input-wifi').value = config.wifiSSID || '';
+                    }
+                }
+
+                // Fetch Notices
+                const resNotices = await apiFetch('/auth/notices');
+                if (resNotices.ok) {
+                    const notices = await resNotices.json();
+                    const noticesTbody = document.getElementById('notices-table-body');
+                    noticesTbody.innerHTML = '';
+                    if (notices.length === 0) {
+                        noticesTbody.innerHTML = `<tr><td colspan="6" class="px-lg py-4 text-center text-body-md text-on-surface-variant italic font-medium">No announcements posted yet.</td></tr>`;
+                    } else {
+                        notices.forEach(n => {
+                            const dateStr = new Date(n.createdAt).toLocaleDateString('en-US', {
+                                month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                            });
+                            const categoryColors = {
+                                'Event': 'bg-primary/10 text-primary px-2 py-0.5 rounded-full text-xs font-semibold',
+                                'Class Reschedule': 'bg-error-container text-error px-2 py-0.5 rounded-full text-xs font-semibold',
+                                'Holiday': 'bg-secondary/10 text-secondary px-2 py-0.5 rounded-full text-xs font-semibold',
+                                'Exam': 'bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded-full text-xs font-semibold',
+                                'General': 'bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full text-xs font-semibold'
+                            };
+                            const badgeColor = categoryColors[n.category] || categoryColors['General'];
+                            const posterName = n.postedBy ? n.postedBy.name : 'Admin';
+                            noticesTbody.innerHTML += `
+                                <tr class="hover:bg-surface-container transition-colors">
+                                    <td class="px-lg py-4 font-bold text-on-surface">${n.title}</td>
+                                    <td class="px-lg py-4">
+                                        <span class="${badgeColor}">
+                                            ${n.category}
+                                        </span>
+                                    </td>
+                                    <td class="px-lg py-4 text-body-md font-medium text-on-surface-variant">${n.department}</td>
+                                    <td class="px-lg py-4 text-body-md text-on-surface-variant">${dateStr}</td>
+                                    <td class="px-lg py-4 text-body-md font-medium">${posterName}</td>
+                                    <td class="px-lg py-4 text-right">
+                                        <button class="hover:text-error transition-colors p-1" onclick="deleteNotice('${n._id}')">
+                                            <span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+
+                // Fetch Teachers Dropdown inside timetable creation modal
+                const resTeachersDropdown = await apiFetch('/admin/teachers');
+                if (resTeachersDropdown.ok) {
+                    const teachers = await resTeachersDropdown.json();
+                    const select = document.getElementById('class-teacher');
+                    select.innerHTML = '<option value="">Select a Teacher</option>';
+                    teachers.forEach(t => {
+                        select.innerHTML += `<option value="${t._id}">${t.name} (${t.email})</option>`;
+                    });
+                }
+
+                await loadRiskScores();
+            } catch (error) {
+                console.error(error);
+                alert("Failed to load dashboard data.");
+            }
+        }
+
+        // Render Student Directory table
+        function renderStudentsList(filteredStudents = null) {
+            const students = filteredStudents || allStudents;
+            const tbody = document.getElementById('students-table-body');
+            tbody.innerHTML = '';
+            
+            if (students.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-lg py-8 text-center text-body-md text-on-surface-variant italic">No students found.</td></tr>`;
+                return;
+            }
+
+            students.forEach(s => {
+                const initials = s.name.substring(0, 2).toUpperCase();
+                
+                // Check if this student matches the highlight query
+                const query = (window.highlightQuery || '').trim().toLowerCase();
+                const isMatched = query && (
+                    (s.name && s.name.toLowerCase().includes(query)) ||
+                    (s.email && s.email.toLowerCase().includes(query)) ||
+                    (s.rollNo && s.rollNo.toLowerCase().includes(query)) ||
+                    (s.phone && s.phone.toLowerCase().includes(query))
+                );
+
+                const highlightClass = isMatched 
+                    ? 'bg-amber-100/70 border-l-4 border-amber-500 transition-colors' 
+                    : 'hover:bg-surface-container-low/20 transition-colors border-b border-outline-variant';
+
+                tbody.innerHTML += `
+                    <tr class="${highlightClass} relative" data-highlighted="${isMatched ? 'true' : 'false'}">
+                        <td class="p-1">
+                            <input type="text" value="${s.rollNo || ''}" placeholder="Roll No"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md font-bold text-primary outline-none transition-all"
+                                onblur="saveStudentCell('${s._id}', 'rollNo', this.value)">
+                        </td>
+                        <td class="p-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-[10px] flex-shrink-0">${initials}</div>
+                                <input type="text" value="${s.name || ''}" placeholder="Full Name"
+                                    class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md font-semibold outline-none transition-all"
+                                    onblur="saveStudentCell('${s._id}', 'name', this.value)">
+                            </div>
+                        </td>
+                        <td class="p-1">
+                            <input type="text" value="${s.department || ''}" placeholder="Department"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md text-on-surface-variant outline-none transition-all"
+                                onblur="saveStudentCell('${s._id}', 'department', this.value)">
+                        </td>
+                        <td class="p-1">
+                            <input type="email" value="${s.email || ''}" placeholder="Email Address"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md text-on-surface-variant outline-none transition-all"
+                                onblur="saveStudentCell('${s._id}', 'email', this.value)">
+                        </td>
+                        <td class="p-1">
+                            <input type="text" value="${s.phone || ''}" placeholder="Phone Number"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md text-on-surface-variant outline-none transition-all"
+                                onblur="saveStudentCell('${s._id}', 'phone', this.value)">
+                        </td>
+                        <td class="px-lg py-4 text-right flex items-center justify-end gap-2">
+                            <span id="save-status-${s._id}" class="material-symbols-outlined text-green-600 text-[18px] opacity-0 transition-opacity">check_circle</span>
+                            <button onclick="deleteUser('${s._id}', 'student')" class="text-error hover:text-red-700 transition-colors p-1 rounded hover:bg-error-container/20">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            if (window.highlightQuery) {
+                // Find first highlighted row and scroll it into view
+                const firstHighlighted = tbody.querySelector('tr[data-highlighted="true"]');
+                if (firstHighlighted) {
+                    setTimeout(() => {
+                        firstHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            }
+        }
+
+        window.saveStudentCell = async function(userId, field, value) {
+            // Find student to check if value actually changed
+            const student = allStudents.find(s => s._id === userId);
+            if (student && student[field] === value) return; // No change, skip save
+
+            try {
+                const payload = {};
+                payload[field] = value;
+
+                const res = await apiFetch(`/admin/edit-user/${userId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    // Update local cached student object
+                    if (student) {
+                        student[field] = value;
+                    }
+                    
+                    // Show checkmark animation next to the row
+                    const statusEl = document.getElementById(`save-status-${userId}`);
+                    if (statusEl) {
+                        statusEl.classList.remove('opacity-0');
+                        setTimeout(() => {
+                            statusEl.classList.add('opacity-0');
+                        }, 2000);
+                    }
+                } else {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Failed to update student');
+                }
+            } catch (err) {
+                alert('Save failed: ' + err.message);
+                loadAdminDashboard(); // reload to reset input fields to db state
+            }
+        }
+
+        window.saveTeacherCell = async function(userId, field, value) {
+            // Find teacher to check if value actually changed
+            const teacher = allTeachers.find(t => t._id === userId);
+            if (teacher && teacher[field] === value) return; // No change, skip save
+
+            try {
+                const payload = {};
+                payload[field] = value;
+
+                const res = await apiFetch(`/admin/edit-user/${userId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    // Update local cached teacher object
+                    if (teacher) {
+                        teacher[field] = value;
+                    }
+                    
+                    // Show checkmark animation next to the row
+                    const statusEl = document.getElementById(`t-save-status-${userId}`);
+                    if (statusEl) {
+                        statusEl.classList.remove('opacity-0');
+                        setTimeout(() => {
+                            statusEl.classList.add('opacity-0');
+                        }, 2000);
+                    }
+                } else {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Failed to update teacher');
+                }
+            } catch (err) {
+                alert('Save failed: ' + err.message);
+                loadAdminDashboard(); // reload to reset input fields to db state
+            }
+        }
+
+        // Render Faculty Directory table
+        function renderTeachersList(filteredTeachers = null) {
+            const teachers = filteredTeachers || allTeachers;
+            const tbody = document.getElementById('teachers-table-body');
+            tbody.innerHTML = '';
+            
+            if (teachers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-lg py-8 text-center text-body-md text-on-surface-variant italic">No faculty members found.</td></tr>`;
+                return;
+            }
+
+            teachers.forEach(t => {
+                const initials = t.name.substring(0, 2).toUpperCase();
+                
+                // Check if this teacher matches the highlight query
+                const query = (window.highlightTeacherQuery || '').trim().toLowerCase();
+                const isMatched = query && (
+                    (t.name && t.name.toLowerCase().includes(query)) ||
+                    (t.email && t.email.toLowerCase().includes(query)) ||
+                    (t.department && t.department.toLowerCase().includes(query)) ||
+                    (t.phone && t.phone.toLowerCase().includes(query))
+                );
+
+                const highlightClass = isMatched 
+                    ? 'bg-amber-100/70 border-l-4 border-amber-500 transition-colors' 
+                    : 'hover:bg-surface-container-low/20 transition-colors border-b border-outline-variant';
+
+                tbody.innerHTML += `
+                    <tr class="${highlightClass} relative" data-teacher-highlighted="${isMatched ? 'true' : 'false'}">
+                        <td class="p-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-[10px] flex-shrink-0">${initials}</div>
+                                <input type="text" value="${t.name || ''}" placeholder="Full Name"
+                                    class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md font-semibold outline-none transition-all"
+                                    onblur="saveTeacherCell('${t._id}', 'name', this.value)">
+                            </div>
+                        </td>
+                        <td class="p-1">
+                            <input type="text" value="${t.department || ''}" placeholder="Department"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md text-on-surface-variant outline-none transition-all"
+                                onblur="saveTeacherCell('${t._id}', 'department', this.value)">
+                        </td>
+                        <td class="p-1">
+                            <input type="email" value="${t.email || ''}" placeholder="Email Address"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md text-on-surface-variant outline-none transition-all"
+                                onblur="saveTeacherCell('${t._id}', 'email', this.value)">
+                        </td>
+                        <td class="p-1">
+                            <input type="text" value="${t.phone || ''}" placeholder="Phone Number"
+                                class="w-full bg-transparent border border-transparent hover:border-outline focus:border-primary focus:bg-surface-container-lowest rounded p-1.5 text-body-md text-on-surface-variant outline-none transition-all"
+                                onblur="saveTeacherCell('${t._id}', 'phone', this.value)">
+                        </td>
+                        <td class="px-lg py-4 text-right flex items-center justify-end gap-2">
+                            <span id="t-save-status-${t._id}" class="material-symbols-outlined text-green-600 text-[18px] opacity-0 transition-opacity">check_circle</span>
+                            <button onclick="deleteUser('${t._id}', 'teacher')" class="text-error hover:text-red-700 transition-colors p-1 rounded hover:bg-error-container/20">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            if (window.highlightTeacherQuery) {
+                // Find first highlighted row and scroll it into view
+                const firstHighlighted = tbody.querySelector('tr[data-teacher-highlighted="true"]');
+                if (firstHighlighted) {
+                    setTimeout(() => {
+                        firstHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            }
+        }
+
+        // Filtering and Searching logic for Students Directory
+        function filterStudentsList() {
+            window.highlightQuery = '';
+            const deptFilter = document.getElementById('filter-student-dept').value;
+            const classFilter = document.getElementById('filter-student-class').value;
+            const searchQuery = document.getElementById('search-student-query').value.trim().toLowerCase();
+
+            let filtered = allStudents;
+
+            if (deptFilter !== 'All') {
+                filtered = filtered.filter(s => s.department === deptFilter);
+            }
+
+            if (classFilter !== 'All') {
+                // If a class (division) is selected, we filter students whose department matches the class division department
+                // or where division name contains parts of the department. Let's make it robust:
+                // Find class to check its department
+                const targetClassObj = window.adminClassesList ? window.adminClassesList.find(c => c.name === classFilter) : null;
+                if (targetClassObj) {
+                    filtered = filtered.filter(s => s.department === targetClassObj.department);
+                }
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(s => 
+                    (s.name && s.name.toLowerCase().includes(searchQuery)) || 
+                    (s.email && s.email.toLowerCase().includes(searchQuery)) || 
+                    (s.rollNo && s.rollNo.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            renderStudentsList(filtered);
+        }
+
+        // Filtering and Searching logic for Teachers/Faculty Directory
+        function filterTeachersList() {
+            window.highlightTeacherQuery = '';
+            const deptFilter = document.getElementById('filter-teacher-dept').value;
+            const searchQuery = document.getElementById('search-teacher-query').value.trim().toLowerCase();
+
+            let filtered = allTeachers;
+
+            if (deptFilter !== 'All') {
+                filtered = filtered.filter(t => t.department === deptFilter);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(t => 
+                    (t.name && t.name.toLowerCase().includes(searchQuery)) || 
+                    (t.email && t.email.toLowerCase().includes(searchQuery)) || 
+                    (t.phone && t.phone.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            renderTeachersList(filtered);
+        }
+
+        // Deleting student/faculty API helper
+        window.deleteUser = async function(userId, role) {
+            if (!confirm(`Are you sure you want to delete this ${role}? All their associated logs/records will be deleted.`)) return;
+            try {
+                const res = await apiFetch(`/admin/delete-user/${userId}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(data.message || 'User deleted successfully.');
+                    loadAdminDashboard();
+                } else {
+                    throw new Error(data.error || 'Failed to delete user.');
+                }
+            } catch (err) {
+                alert(err.message);
+            }
+        };
+
+        // System Settings apply
+        document.getElementById('btn-apply-settings').addEventListener('click', async (e) => {
+            const btn = e.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Saving...';
+            
+            try {
+                const payload = {
+                    attendanceThreshold: parseInt(document.getElementById('input-threshold').value),
+                    qrExpirySeconds: parseInt(document.getElementById('input-qr-expiry').value),
+                    wifiSSID: document.getElementById('input-wifi').value
+                };
+
+                const res = await apiFetch('/admin/settings', {
+                    method: 'PUT',
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) alert('Settings saved successfully!');
+                else throw new Error('Failed to save settings');
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Add User Modal logic
+        const modal = document.getElementById('add-user-modal');
+        
+        window.openAddUserModal = function(role) {
+            document.getElementById('add-user-form').reset();
+            document.getElementById('form-error').classList.add('hidden');
+            
+            const roleSelect = document.getElementById('user-role');
+            roleSelect.value = role;
+            
+            if (role === 'teacher') {
+                document.getElementById('teacher-experience-fields').classList.remove('hidden');
+                document.getElementById('add-user-modal-title').textContent = 'Add New Teacher / Faculty';
+            } else {
+                document.getElementById('teacher-experience-fields').classList.add('hidden');
+                document.getElementById('add-user-modal-title').textContent = 'Add New Student';
+            }
+            modal.classList.remove('hidden');
+        };
+
+        document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.add('hidden'));
+        document.getElementById('btn-cancel-modal').addEventListener('click', () => modal.classList.add('hidden'));
+
+        document.getElementById('user-role').addEventListener('change', (e) => {
+            const expFields = document.getElementById('teacher-experience-fields');
+            if (e.target.value === 'teacher') {
+                expFields.classList.remove('hidden');
+            } else {
+                expFields.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('add-user-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-user');
+            const errDiv = document.getElementById('form-error');
+            btn.disabled = true;
+            btn.innerHTML = 'Creating...';
+            errDiv.classList.add('hidden');
+
+            const payload = {
+                name: document.getElementById('user-name').value,
+                email: document.getElementById('user-email').value,
+                role: document.getElementById('user-role').value,
+                rollNo: document.getElementById('user-roll').value,
+                department: document.getElementById('user-dept').value,
+                phone: document.getElementById('user-phone').value,
+                password: document.getElementById('user-pwd').value,
+                expYears: parseInt(document.getElementById('user-exp-years').value) || 0,
+                expMonths: parseInt(document.getElementById('user-exp-months').value) || 0,
+                expDays: parseInt(document.getElementById('user-exp-days').value) || 0
+            };
+
+            try {
+                const res = await apiFetch('/admin/add-user', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to create user');
+                
+                modal.classList.add('hidden');
+                e.target.reset();
+                loadAdminDashboard(); // Refresh users list
+                alert('User created successfully');
+            } catch (err) {
+                errDiv.textContent = err.message;
+                errDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">person_add</span> Create';
+            }
+        });
+
+        // CSV Upload Modal logic
+        const csvModal = document.getElementById('csv-upload-modal');
+        window.openCsvModal = function() {
+            document.getElementById('csv-upload-form').reset();
+            document.getElementById('csv-form-error').classList.add('hidden');
+            document.getElementById('csv-form-success').classList.add('hidden');
+            csvModal.classList.remove('hidden');
+        };
+        document.getElementById('btn-close-csv-modal').addEventListener('click', () => csvModal.classList.add('hidden'));
+        document.getElementById('btn-cancel-csv-modal').addEventListener('click', () => csvModal.classList.add('hidden'));
+
+        document.getElementById('csv-upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-csv');
+            const errDiv = document.getElementById('csv-form-error');
+            const successDiv = document.getElementById('csv-form-success');
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Uploading...';
+            errDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+
+            const fileInput = document.getElementById('csv-file-input');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const res = await apiFetch('/admin/bulk-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (!res.ok) throw new Error(data.error || 'Failed to upload CSV');
+                
+                successDiv.textContent = data.message;
+                successDiv.classList.remove('hidden');
+                
+                loadAdminDashboard(); // Refresh users list
+                
+                // Close modal after 2 seconds
+                setTimeout(() => {
+                    csvModal.classList.add('hidden');
+                    e.target.reset();
+                    successDiv.classList.add('hidden');
+                }, 2000);
+
+            } catch (err) {
+                errDiv.textContent = err.message;
+                errDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">upload</span> Upload';
+            }
+        });
+
+        window.renderGridTimetable = function() {
+            const container = document.getElementById('timetable-grid-container');
+            if (!container) return;
+
+            const deptFilter = document.getElementById('filter-timetable-dept').value;
+            const classFilter = document.getElementById('filter-timetable-class').value;
+
+            const classes = window.adminClassesList || [];
+
+            // Filter classes
+            let filteredClasses = classes;
+            if (deptFilter !== 'All') {
+                filteredClasses = filteredClasses.filter(c => c.department.trim().toLowerCase() === deptFilter.trim().toLowerCase());
+            }
+            if (classFilter !== 'All') {
+                filteredClasses = filteredClasses.filter(c => c.name.trim().toLowerCase() === classFilter.trim().toLowerCase());
+            }
+
+            // Define standard weekdays
+            const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            // Determine unique time slots
+            const defaultSlots = [
+                "09:00 - 10:00",
+                "10:00 - 11:00",
+                "11:00 - 12:00",
+                "12:00 - 13:00",
+                "13:00 - 14:00",
+                "14:00 - 15:00",
+                "15:00 - 16:00"
+            ];
+            
+            const uniqueSlots = new Set(defaultSlots);
+            classes.forEach(c => {
+                if (c.schedule && c.schedule.startTime && c.schedule.endTime) {
+                    uniqueSlots.add(`${c.schedule.startTime.trim()} - ${c.schedule.endTime.trim()}`);
+                }
+            });
+
+            const sortedSlots = Array.from(uniqueSlots).sort((a, b) => {
+                const timeA = a.split(' - ')[0];
+                const timeB = b.split(' - ')[0];
+                return timeA.localeCompare(timeB);
+            });
+
+            // Build grid table
+            let tableHTML = `
+                <table class="min-w-full border-collapse border border-outline-variant bg-surface-container-lowest text-body-md text-left rounded-lg overflow-hidden">
+                    <thead class="bg-surface-container-low text-on-surface-variant font-semibold">
+                        <tr>
+                            <th class="border border-outline-variant p-3 font-bold text-center w-36 bg-surface-container-low/80">Time Slot</th>
+                            ${days.map(d => `<th class="border border-outline-variant p-3 font-bold text-center bg-surface-container-low/80">${d}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant">
+            `;
+
+            sortedSlots.forEach(slot => {
+                const [startTime, endTime] = slot.split(' - ');
+                tableHTML += `
+                    <tr class="hover:bg-surface-container-low/20 transition-colors">
+                        <td class="border border-outline-variant p-3 font-bold text-center bg-surface-container-low/30 text-on-surface-variant text-label-md w-36 select-none">${slot}</td>
+                `;
+
+                days.forEach(day => {
+                    // Find classes matching day & time slot
+                    const slotClasses = filteredClasses.filter(c => {
+                        return c.schedule && 
+                               c.schedule.day.trim().toLowerCase() === day.trim().toLowerCase() && 
+                               `${c.schedule.startTime.trim()} - ${c.schedule.endTime.trim()}` === slot;
+                    });
+
+                    tableHTML += `<td class="border border-outline-variant p-2 align-top h-28 min-w-[160px] relative group hover:bg-surface-container/10 transition-colors">`;
+
+                    if (slotClasses.length > 0) {
+                        tableHTML += `<div class="space-y-2">`;
+                        slotClasses.forEach(c => {
+                            const teacherName = c.teacherId ? c.teacherId.name : 'Unknown';
+                            tableHTML += `
+                                <div class="bg-primary/5 border border-primary/20 p-2 rounded text-left relative hover:border-primary/50 hover:bg-primary/10 transition-colors">
+                                    <div class="flex items-start justify-between gap-1 mb-1">
+                                        <p class="font-bold text-primary text-body-md leading-tight">${c.subject}</p>
+                                        <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                                            <button class="hover:text-primary p-0.5 rounded hover:bg-surface-container-high transition-colors" onclick="editClass('${c._id}')" title="Edit">
+                                                <span class="material-symbols-outlined text-[14px]">edit</span>
+                                            </button>
+                                            <button class="hover:text-error p-0.5 rounded hover:bg-surface-container-high transition-colors" onclick="deleteClass('${c._id}')" title="Delete">
+                                                <span class="material-symbols-outlined text-[14px]">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-0.5 text-[11px] text-on-surface-variant">
+                                        <p class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">groups</span> ${c.name}</p>
+                                        <p class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">person</span> ${teacherName}</p>
+                                        <p class="flex items-center gap-1 font-semibold text-secondary"><span class="material-symbols-outlined text-[12px]">meeting_room</span> Room ${c.room || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        tableHTML += `</div>`;
+                    }
+
+                    // Add cell '+' button for creating new classes
+                    const queryDept = deptFilter !== 'All' ? deptFilter : '';
+                    const queryClass = classFilter !== 'All' ? classFilter : '';
+                    tableHTML += `
+                        <button onclick="quickAddClassForCell('${day}', '${startTime}', '${endTime}', '${queryDept.replace(/'/g, "\\'")}', '${queryClass.replace(/'/g, "\\'")}')" 
+                                class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-on-primary rounded-full w-6 h-6 flex items-center justify-center shadow-sm hover:scale-105 active:scale-95" 
+                                title="Add Class for this slot">
+                            <span class="material-symbols-outlined text-[16px]">add</span>
+                        </button>
+                    `;
+
+                    tableHTML += `</td>`;
+                });
+
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        window.quickAddClassForCell = function(day, startTime, endTime, dept, className) {
+            document.getElementById('class-id').value = '';
+            document.getElementById('add-class-form').reset();
+            document.getElementById('class-day').value = day;
+            document.getElementById('class-starttime').value = startTime;
+            document.getElementById('class-endtime').value = endTime;
+            document.getElementById('class-dept').value = dept || '';
+            document.getElementById('class-name').value = className || '';
+            document.getElementById('class-modal-title').textContent = 'Add Timetable Entry';
+            document.getElementById('btn-submit-class').innerHTML = '<span class="material-symbols-outlined text-[18px]">add_circle</span> Create Entry';
+            document.getElementById('add-class-modal').classList.remove('hidden');
+        }
+
+        // Delete Class helper
+        window.deleteClass = async function(classId) {
+            if (!confirm('Are you sure you want to delete this scheduled class?')) return;
+            try {
+                const res = await apiFetch(`/admin/delete-class/${classId}`, { method: 'DELETE' });
+                if (res.ok) {
+                    alert('Class deleted successfully!');
+                    loadAdminDashboard();
+                } else {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Failed to delete class');
+                }
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        // Add Timetable Entry Modal logic
+        const classModal = document.getElementById('add-class-modal');
+        
+        document.getElementById('btn-add-class').addEventListener('click', () => {
+            document.getElementById('class-id').value = '';
+            document.getElementById('add-class-form').reset();
+            document.getElementById('class-modal-title').textContent = 'Add Timetable Entry';
+            document.getElementById('btn-submit-class').innerHTML = '<span class="material-symbols-outlined text-[18px]">add_circle</span> Create Entry';
+            classModal.classList.remove('hidden');
+        });
+
+        document.getElementById('btn-close-class-modal').addEventListener('click', () => classModal.classList.add('hidden'));
+        document.getElementById('btn-cancel-class-modal').addEventListener('click', () => classModal.classList.add('hidden'));
+
+        window.editClass = function(classId) {
+            const classObj = window.adminClassesList.find(c => c._id === classId);
+            if (!classObj) return alert('Class details not found');
+
+            document.getElementById('class-id').value = classObj._id;
+            document.getElementById('class-name').value = classObj.name || '';
+            document.getElementById('class-subject').value = classObj.subject || '';
+            document.getElementById('class-teacher').value = classObj.teacherId ? classObj.teacherId._id : '';
+            document.getElementById('class-dept').value = classObj.department || '';
+            document.getElementById('class-semester').value = classObj.semester || 1;
+            document.getElementById('class-room').value = classObj.room || 'N/A';
+            document.getElementById('class-capacity').value = classObj.capacity || 60;
+            document.getElementById('class-day').value = classObj.schedule ? classObj.schedule.day : 'Monday';
+            document.getElementById('class-starttime').value = classObj.schedule ? classObj.schedule.startTime : '';
+            document.getElementById('class-endtime').value = classObj.schedule ? classObj.schedule.endTime : '';
+
+            document.getElementById('class-modal-title').textContent = 'Edit Timetable Entry';
+            document.getElementById('btn-submit-class').innerHTML = '<span class="material-symbols-outlined text-[18px]">save</span> Save Changes';
+            classModal.classList.remove('hidden');
+        }
+
+        document.getElementById('add-class-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-class');
+            const errDiv = document.getElementById('class-form-error');
+            const classId = document.getElementById('class-id').value;
+            
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = classId ? 'Saving...' : 'Creating...';
+            errDiv.classList.add('hidden');
+
+            const payload = {
+                name: document.getElementById('class-name').value,
+                subject: document.getElementById('class-subject').value,
+                teacherId: document.getElementById('class-teacher').value,
+                department: document.getElementById('class-dept').value,
+                semester: parseInt(document.getElementById('class-semester').value),
+                room: document.getElementById('class-room').value,
+                capacity: parseInt(document.getElementById('class-capacity').value),
+                day: document.getElementById('class-day').value,
+                startTime: document.getElementById('class-starttime').value,
+                endTime: document.getElementById('class-endtime').value
+            };
+
+            const url = classId ? `/admin/edit-class/${classId}` : '/admin/add-class';
+            const method = classId ? 'PUT' : 'POST';
+
+            try {
+                const res = await apiFetch(url, {
+                    method: method,
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to submit timetable entry');
+                
+                classModal.classList.add('hidden');
+                e.target.reset();
+                loadAdminDashboard();
+                alert(classId ? 'Timetable entry updated successfully' : 'Timetable entry created successfully');
+            } catch (err) {
+                errDiv.textContent = err.message;
+                errDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Timetable Bulk Upload Modal logic
+        const tUploadModal = document.getElementById('timetable-upload-modal');
+        document.getElementById('btn-upload-timetable').addEventListener('click', () => tUploadModal.classList.remove('hidden'));
+        document.getElementById('btn-close-timetable-modal').addEventListener('click', () => tUploadModal.classList.add('hidden'));
+        document.getElementById('btn-cancel-timetable-modal').addEventListener('click', () => tUploadModal.classList.add('hidden'));
+
+        document.getElementById('timetable-upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-timetable');
+            const errDiv = document.getElementById('timetable-form-error');
+            const successDiv = document.getElementById('timetable-form-success');
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Uploading...';
+            errDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+
+            const fileInput = document.getElementById('timetable-file-input');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const res = await apiFetch('/admin/upload-timetable', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (!res.ok) throw new Error(data.error || 'Failed to upload timetable');
+                
+                successDiv.textContent = data.message;
+                successDiv.classList.remove('hidden');
+                
+                loadAdminDashboard();
+                
+                setTimeout(() => {
+                    tUploadModal.classList.add('hidden');
+                    e.target.reset();
+                    successDiv.classList.add('hidden');
+                }, 2000);
+
+            } catch (err) {
+                errDiv.textContent = err.message;
+                errDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">upload</span> Upload';
+            }
+        });
+
+        // Notice Board Modal Toggle
+        const noticeModal = document.getElementById('add-notice-modal');
+        document.getElementById('btn-add-notice').addEventListener('click', () => {
+            document.getElementById('notice-form').reset();
+            const targetTypeSelect = document.getElementById('notice-target-type');
+            if (targetTypeSelect) {
+                targetTypeSelect.value = 'ALL';
+            }
+            window.toggleAdminNoticeTarget();
+            noticeModal.classList.remove('hidden');
+        });
+        document.getElementById('btn-close-notice-modal').addEventListener('click', () => noticeModal.classList.add('hidden'));
+        document.getElementById('btn-cancel-notice-modal').addEventListener('click', () => noticeModal.classList.add('hidden'));
+
+        window.toggleAdminNoticeTarget = function() {
+            const targetType = document.getElementById('notice-target-type').value;
+            const divStudent = document.getElementById('div-admin-notice-student');
+            const divTeacher = document.getElementById('div-admin-notice-teacher');
+            const selectStudent = document.getElementById('notice-student');
+            const selectTeacher = document.getElementById('notice-teacher');
+
+            if (divStudent) divStudent.classList.add('hidden');
+            if (divTeacher) divTeacher.classList.add('hidden');
+            if (selectStudent) selectStudent.removeAttribute('required');
+            if (selectTeacher) selectTeacher.removeAttribute('required');
+
+            if (targetType === 'STUDENT' && divStudent && selectStudent) {
+                divStudent.classList.remove('hidden');
+                selectStudent.setAttribute('required', 'required');
+                selectStudent.innerHTML = '<option value="">Select Student...</option>';
+                allStudents.forEach(student => {
+                    selectStudent.innerHTML += `<option value="${student._id}">${student.name} (${student.email})</option>`;
+                });
+            } else if (targetType === 'TEACHER' && divTeacher && selectTeacher) {
+                divTeacher.classList.remove('hidden');
+                selectTeacher.setAttribute('required', 'required');
+                selectTeacher.innerHTML = '<option value="">Select Teacher...</option>';
+                allTeachers.forEach(teacher => {
+                    selectTeacher.innerHTML += `<option value="${teacher._id}">${teacher.name} (${teacher.email})</option>`;
+                });
+            }
+        };
+
+        // Post Notice submit
+        document.getElementById('notice-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const targetType = document.getElementById('notice-target-type').value;
+            let targetRole = 'All';
+            let targetStudent = null;
+
+            if (targetType === 'ALL_STUDENTS') {
+                targetRole = 'student';
+            } else if (targetType === 'ALL_TEACHERS') {
+                targetRole = 'teacher';
+            } else if (targetType === 'STUDENT') {
+                targetRole = 'student';
+                targetStudent = document.getElementById('notice-student').value;
+            } else if (targetType === 'TEACHER') {
+                targetRole = 'teacher';
+                targetStudent = document.getElementById('notice-teacher').value;
+            }
+
+            const payload = {
+                title: document.getElementById('notice-title').value,
+                category: document.getElementById('notice-category').value,
+                department: document.getElementById('notice-dept').value,
+                content: document.getElementById('notice-content').value,
+                targetRole: targetRole,
+                targetStudent: targetStudent
+            };
+
+            try {
+                const res = await apiFetch('/auth/notices', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to post announcement');
+
+                noticeModal.classList.add('hidden');
+                e.target.reset();
+                loadAdminDashboard();
+                alert('Announcement posted successfully!');
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+
+        // Student Dropout Risk Profiling and Intervention helpers
+        async function loadRiskScores() {
+            try {
+                const res = await apiFetch('/admin/risk-scores');
+                if (res.ok) {
+                    allRiskScores = await res.json();
+                    renderRiskList();
+                }
+            } catch (error) {
+                console.error("Error loading risk scores:", error);
+            }
+        }
+
+        function renderRiskList() {
+            const tbody = document.getElementById('risk-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            const filterLevel = document.getElementById('filter-risk-level').value;
+            const searchQuery = document.getElementById('search-risk-query').value.trim().toLowerCase();
+            
+            let filtered = allRiskScores;
+            if (filterLevel !== 'All') {
+                filtered = filtered.filter(item => item.riskLevel === filterLevel);
+            }
+            if (searchQuery) {
+                filtered = filtered.filter(item => {
+                    const name = item.name ? item.name.toLowerCase() : '';
+                    const roll = item.rollNo ? item.rollNo.toLowerCase() : '';
+                    return name.includes(searchQuery) || roll.includes(searchQuery);
+                });
+            }
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="px-lg py-4 text-center text-on-surface-variant font-medium">No at-risk students found.</td></tr>`;
+                return;
+            }
+            
+            filtered.forEach(item => {
+                let riskBadge = '';
+                if (item.riskLevel === 'HIGH') {
+                    riskBadge = `<span class="bg-error-container text-error text-[12px] font-bold px-2 py-1 rounded-full">HIGH RISK</span>`;
+                } else if (item.riskLevel === 'MEDIUM') {
+                    riskBadge = `<span class="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-[12px] font-bold px-2 py-1 rounded-full">MEDIUM</span>`;
+                } else {
+                    riskBadge = `<span class="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 text-[12px] font-bold px-2 py-1 rounded-full">LOW</span>`;
+                }
+                
+                const score = Math.min(100, Math.max(0, Math.round(item.riskScore)));
+                let barColor = 'bg-secondary-container';
+                if (item.riskLevel === 'HIGH') barColor = 'bg-error';
+                else if (item.riskLevel === 'MEDIUM') barColor = 'bg-amber-500';
+                
+                const attendance = item.attendanceRate !== undefined ? Math.round(item.attendanceRate) + '%' : 'N/A';
+                const engagement = item.engagementScore !== undefined ? Math.round(item.engagementScore) + '%' : 'N/A';
+                const assignmentAvg = item.assignmentMarks !== undefined ? Math.round(item.assignmentMarks) : 'N/A';
+                const peerGap = item.peerPerformanceGap !== undefined ? Math.round(item.peerPerformanceGap) : 'N/A';
+                
+                let actionButton = '';
+                if (item.interventionActive) {
+                    actionButton = `<span class="text-label-md text-secondary font-bold flex items-center justify-end gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span> Active</span>`;
+                } else {
+                    actionButton = `<button onclick="openInterventionModal('${item.studentId}', '${item.name.replace(/'/g, "\\'")}')" class="bg-primary text-on-primary text-xs px-3 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all">Assign</button>`;
+                }
+                
+                tbody.innerHTML += `
+                    <tr class="hover:bg-surface-container-low transition-colors duration-150">
+                        <td class="px-lg py-4">
+                            <p class="text-body-md font-bold text-on-surface">${item.name}</p>
+                            <p class="text-label-md text-on-surface-variant">${item.rollNo}</p>
+                        </td>
+                        <td class="px-lg py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-24 bg-surface-variant rounded-full h-2 overflow-hidden">
+                                    <div class="${barColor} h-full" style="width: ${score}%"></div>
+                                </div>
+                                <span class="text-label-md font-bold">${score}%</span>
+                            </div>
+                        </td>
+                        <td class="px-lg py-4 font-medium text-body-md">${attendance}</td>
+                        <td class="px-lg py-4 font-medium text-body-md">${item.complaintCount || 0}</td>
+                        <td class="px-lg py-4 font-medium text-body-md">${engagement}</td>
+                        <td class="px-lg py-4">
+                            <p class="text-body-md font-bold">Avg: ${assignmentAvg}</p>
+                            <p class="text-label-md text-on-surface-variant">Class Avg: ${peerGap}</p>
+                        </td>
+                        <td class="px-lg py-4">${riskBadge}</td>
+                        <td class="px-lg py-4 text-right">${actionButton}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function filterRiskList() {
+            renderRiskList();
+        }
+
+        async function triggerWeeklyAlerts() {
+            const btn = document.getElementById('btn-trigger-alerts');
+            if (btn) btn.disabled = true;
+            try {
+                const res = await apiFetch('/admin/trigger-weekly-check', {
+                    method: 'POST'
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to trigger weekly alerts');
+                showToast(data.message, 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function openInterventionModal(studentId, studentName) {
+            document.getElementById('intervention-student-id').value = studentId;
+            document.getElementById('intervention-student-name').value = studentName;
+            
+            const selectMentor = document.getElementById('intervention-mentor');
+            selectMentor.innerHTML = '<option value="">Select a Faculty Member</option>';
+            allTeachers.forEach(teacher => {
+                selectMentor.innerHTML += `<option value="${teacher._id}">${teacher.name} (${teacher.department || 'General'})</option>`;
+            });
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('intervention-target-date').min = today;
+            document.getElementById('intervention-target-date').value = '';
+            document.getElementById('intervention-desc').value = '';
+            document.getElementById('intervention-type').value = 'ACADEMIC_SUPPORT';
+            
+            document.getElementById('intervention-modal').classList.remove('hidden');
+        }
+
+        function closeInterventionModal() {
+            document.getElementById('intervention-modal').classList.add('hidden');
+        }
+
+        // Intervention Submit Handler
+        document.getElementById('intervention-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                studentId: document.getElementById('intervention-student-id').value,
+                type: document.getElementById('intervention-type').value,
+                mentorId: document.getElementById('intervention-mentor').value,
+                targetDate: document.getElementById('intervention-target-date').value,
+                description: document.getElementById('intervention-desc').value
+            };
+
+            try {
+                const res = await apiFetch('/admin/interventions', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed to assign intervention');
+
+                closeInterventionModal();
+                showToast('Intervention plan assigned successfully!', 'success');
+                loadAdminDashboard();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // Complaints helper functions
+        async function loadAdminComplaints() {
+            try {
+                const res = await apiFetch('/complaints');
+                if (!res.ok) throw new Error('Failed to load complaints');
+                let complaints = await res.json();
+                
+                const filterVal = document.getElementById('filter-complaints-status') 
+                    ? document.getElementById('filter-complaints-status').value 
+                    : 'All';
+                if (filterVal !== 'All') {
+                    complaints = complaints.filter(c => c.status === filterVal);
+                }
+                
+                const tbody = document.getElementById('complaints-table-body');
+                tbody.innerHTML = '';
+                
+                if (complaints.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="px-lg py-8 text-center text-body-md text-on-surface-variant italic">No complaints found.</td></tr>`;
+                    return;
+                }
+                
+                complaints.forEach(c => {
+                    const dateStr = new Date(c.createdAt).toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                    });
+                    
+                    const statusClass = c.status === 'Resolved' 
+                        ? 'bg-secondary-container text-on-secondary-container' 
+                        : 'bg-amber-100 text-amber-800';
+                        
+                    const resolveBtn = c.status === 'Pending' 
+                        ? `<button onclick="resolveAdminComplaint('${c._id}')" class="bg-secondary text-on-secondary text-xs px-3 py-1.5 rounded font-button-text hover:bg-surface-tint transition-all active:scale-95 shadow-sm">Resolve</button>` 
+                        : `<span class="text-xs font-bold text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">done_all</span> Resolved</span>`;
+                    
+                    const senderName = c.sender ? c.sender.name : 'Unknown';
+                    const senderRole = c.senderRole.toUpperCase();
+                    const senderEmail = c.sender ? c.sender.email : 'N/A';
+                    
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-surface-container/20 transition-colors border-b border-outline-variant">
+                            <td class="px-lg py-4 text-body-md font-bold text-on-surface">
+                                ${senderName}
+                                <div class="text-[10px] text-on-surface-variant font-normal">${senderEmail}</div>
+                            </td>
+                            <td class="px-lg py-4 text-body-md text-on-surface-variant font-medium">${senderRole}</td>
+                            <td class="px-lg py-4 text-body-md font-semibold text-primary">${c.subject}</td>
+                            <td class="px-lg py-4 text-body-md text-on-surface-variant whitespace-pre-wrap max-w-xs">${c.message}</td>
+                            <td class="px-lg py-4 text-body-md text-on-surface-variant">${dateStr}</td>
+                            <td class="px-lg py-4">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${statusClass}">${c.status}</span>
+                            </td>
+                            <td class="px-lg py-4 text-right">${resolveBtn}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        window.resolveAdminComplaint = async function(complaintId) {
+            try {
+                const res = await apiFetch(`/complaints/${complaintId}/resolve`, { method: 'PUT' });
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Failed to resolve complaint');
+                }
+                showToast('Complaint resolved successfully!');
+                loadAdminComplaints();
+                loadAdminDashboard();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        };
+
+        // Delete Notice helper
+        window.deleteNotice = async function(noticeId) {
+            if (!confirm('Are you sure you want to delete this announcement?')) return;
+            try {
+                const res = await apiFetch(`/auth/notices/${noticeId}`, { method: 'DELETE' });
+                if (res.ok) {
+                    alert('Announcement deleted successfully!');
+                    loadAdminDashboard();
+                } else {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Failed to delete announcement');
+                }
+            } catch (err) {
+                alert(err.message);
+            }
+        };
+
+        // Search Student keypress Enter handler
+        document.getElementById('search-student-query').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const val = this.value.trim().toLowerCase();
+                if (val) {
+                    window.highlightQuery = val;
+                    // Reset dropdown filters to show the full list to highlight matches
+                    document.getElementById('filter-student-dept').value = 'All';
+                    document.getElementById('filter-student-class').value = 'All';
+                    renderStudentsList();
+                } else {
+                    window.highlightQuery = '';
+                    renderStudentsList();
+                }
+            }
+        });
+
+        // Clear highlight if query is cleared manually
+        document.getElementById('search-student-query').addEventListener('input', function(e) {
+            if (!this.value.trim()) {
+                window.highlightQuery = '';
+            }
+        });
+
+        // Search Faculty keypress Enter handler
+        document.getElementById('search-teacher-query').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const val = this.value.trim().toLowerCase();
+                if (val) {
+                    window.highlightTeacherQuery = val;
+                    // Reset dropdown filters to show the full list to highlight matches
+                    document.getElementById('filter-teacher-dept').value = 'All';
+                    renderTeachersList();
+                } else {
+                    window.highlightTeacherQuery = '';
+                    renderTeachersList();
+                }
+            }
+        });
+
+        // Clear highlight if query is cleared manually
+        document.getElementById('search-teacher-query').addEventListener('input', function(e) {
+            if (!this.value.trim()) {
+                window.highlightTeacherQuery = '';
+            }
+        });
+
+        // Initialize Admin Page view on load
+        showView('overview');
+        loadAdminDashboard();
+    </script>
+</body>
+</html>

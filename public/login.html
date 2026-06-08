@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduSync Attendance - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "hsl(172, 80%, 30%)",
+                        "on-primary": "#ffffff",
+                        "primary-container": "hsl(243, 80%, 96%)",
+                        "on-primary-container": "hsl(243, 80%, 25%)",
+                        "secondary": "hsl(150, 80%, 35%)",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "hsl(150, 80%, 96%)",
+                        "on-secondary-container": "hsl(150, 80%, 20%)",
+                        "background": "hsl(215, 15%, 97%)",
+                        "on-background": "hsl(222, 47%, 11%)",
+                        "surface": "#ffffff",
+                        "on-surface": "hsl(222, 47%, 11%)",
+                        "surface-variant": "hsl(215, 15%, 93%)",
+                        "on-surface-variant": "hsl(215, 10%, 40%)",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "hsl(215, 15%, 97%)",
+                        "surface-container": "#ffffff",
+                        "surface-container-high": "hsl(215, 15%, 93%)",
+                        "surface-container-highest": "hsl(215, 10%, 85%)",
+                        "outline": "hsl(215, 10%, 85%)",
+                        "outline-variant": "hsl(215, 12%, 91%)",
+                        "error": "#ef4444",
+                        "on-error": "#ffffff",
+                        "error-container": "#fee2e2",
+                        "on-error-container": "#991b1b",
+                        "tertiary": "hsl(32, 95%, 55%)",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "hsl(32, 95%, 96%)",
+                        "on-tertiary-container": "hsl(32, 95%, 20%)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "container-max": "1280px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                        "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+                        "button-text": ["Plus Jakarta Sans", "sans-serif"],
+                        "label-md": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "button-text": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background-color: hsl(215, 15%, 97%);
+            background-image: 
+                radial-gradient(circle at 10% 20%, hsla(172, 80%, 30%, 0.04) 0%, transparent 35%),
+                radial-gradient(circle at 90% 80%, hsla(243, 75%, 59%, 0.04) 0%, transparent 35%),
+                linear-gradient(rgba(226, 232, 240, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(226, 232, 240, 0.3) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+        }
+        button.bg-primary, 
+        input[type="submit"].bg-primary,
+        .btn-primary {
+            background: linear-gradient(135deg, hsl(172, 80%, 30%) 0%, hsl(243, 75%, 59%) 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        button.bg-primary:hover, 
+        input[type="submit"].bg-primary:hover {
+            opacity: 0.95;
+            box-shadow: 0 4px 15px rgba(30, 27, 75, 0.15) !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .login-card {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(12px);
+        }
+        input, select {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- Top Navigation Bar (Partial Implementation for Identity) -->
+<header class="sticky top-0 z-50 flex justify-between items-center w-full px-margin-desktop py-4 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+<h1 class="text-headline-md font-headline-md font-bold text-primary tracking-tight">EduSync Attendance</h1>
+</div>
+<div class="hidden md:block">
+<p class="text-label-md font-label-md text-on-surface-variant">Version 2.4.0</p>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center px-margin-mobile md:px-0 py-12 relative overflow-hidden">
+<!-- Abstract Background Decoration -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-fixed rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary-fixed rounded-full blur-3xl"></div>
+</div>
+<!-- Login Container -->
+<div class="login-card bg-surface-container-lowest w-full max-w-md rounded-xl border border-outline-variant p-lg relative z-10">
+<!-- Branding/Icon -->
+<div class="flex flex-col items-center mb-xl">
+<div class="w-16 h-16 bg-primary-container rounded-xl flex items-center justify-center mb-md shadow-sm">
+<span class="material-symbols-outlined text-on-primary-container text-4xl" data-icon="qr_code_scanner" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Welcome Back</h2>
+<p class="text-body-md font-body-md text-on-surface-variant text-center mt-xs">Access your academic attendance portal</p>
+</div>
+<!-- Login Form -->
+<form action="#" class="space-y-lg">
+<!-- Role Selection -->
+<div class="flex flex-col gap-xs">
+<label class="text-label-md font-label-md text-on-surface-variant" for="role">Select Role</label>
+<div class="relative">
+<select class="w-full h-10 px-md py-2 bg-surface-container-low border border-outline-variant rounded-lg text-body-md font-body-md focus:ring-2 focus:ring-primary focus:ring-opacity-10 focus:border-primary appearance-none transition-all cursor-pointer" id="role">
+<option value="student">Student</option>
+<option value="teacher">Teacher</option>
+<option value="admin">Administrator</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Email/Roll Input -->
+<div class="flex flex-col gap-xs">
+<label class="text-label-md font-label-md text-on-surface-variant" for="identifier">Email or Roll No.</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="person">person</span>
+<input class="w-full h-10 pl-10 pr-md bg-surface-container-low border border-outline-variant rounded-lg text-body-md font-body-md focus:ring-2 focus:ring-primary focus:ring-opacity-10 focus:border-primary transition-all" id="identifier" placeholder="e.g. 2021-CS-101" type="text"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="flex flex-col gap-xs">
+<label class="text-label-md font-label-md text-on-surface-variant" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="lock">lock</span>
+<input class="w-full h-10 pl-10 pr-10 bg-surface-container-low border border-outline-variant rounded-lg text-body-md font-body-md focus:ring-2 focus:ring-primary focus:ring-opacity-10 focus:border-primary transition-all" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-md" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Actions Row -->
+<div class="flex items-center justify-between">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface transition-colors">Remember me</span>
+</label>
+<a class="text-label-md font-label-md text-primary hover:underline font-semibold" href="#">Forgot Password?</a>
+</div>
+<!-- Error Message -->
+<div id="error-msg" class="hidden text-error text-label-md font-label-md bg-error-container p-2 rounded-lg text-center"></div>
+<!-- Login Button -->
+<button class="w-full h-12 bg-primary-container text-on-primary-container rounded-lg font-button-text text-button-text hover:bg-primary transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined" data-icon="login">login</span>
+                    Login
+                </button>
+</form>
+<!-- Footer Branding -->
+<div class="mt-xl pt-lg border-t border-outline-variant text-center">
+<p class="text-label-md font-label-md text-on-surface-variant">Need an account? <a class="text-primary hover:underline font-semibold" href="#">Contact Registrar</a></p>
+</div>
+</div>
+<!-- Aesthetic Card Decoration -->
+<div class="hidden lg:flex absolute right-16 top-1/2 -translate-y-1/2 flex-col gap-md max-w-xs">
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm rotate-2 hover:rotate-0 transition-transform duration-500">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-fixed" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Secure Authentication</p>
+<p class="text-[10px] text-on-surface-variant">End-to-end encrypted session</p>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-full"></div>
+</div>
+</div>
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm -rotate-3 hover:rotate-0 transition-transform duration-500">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed" data-icon="analytics">analytics</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Real-time Stats</p>
+<p class="text-[10px] text-on-surface-variant">Instant attendance reporting</p>
+</div>
+</div>
+<div class="flex gap-1 h-8 items-end">
+<div class="w-full bg-primary-container opacity-40 h-1/2 rounded-t-sm"></div>
+<div class="w-full bg-primary-container opacity-60 h-3/4 rounded-t-sm"></div>
+<div class="w-full bg-primary-container h-full rounded-t-sm"></div>
+<div class="w-full bg-primary-container opacity-80 h-2/3 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Footer -->
+<footer class="w-full py-md text-center bg-surface-container-lowest border-t border-outline-variant">
+<p class="text-label-md font-label-md text-on-surface-variant">© 2024 EduSync Institutional Solutions. All Rights Reserved.</p>
+</footer>
+<script src="js/api.js"></script>
+<script>
+        // Micro-interaction for role selection colors
+        const roleSelect = document.getElementById('role');
+        const loginBtn = document.querySelector('button[type="submit"]');
+        const loginForm = document.querySelector('form');
+        
+        roleSelect.addEventListener('change', (e) => {
+            const role = e.target.value;
+            if (role === 'admin') {
+                loginBtn.classList.replace('bg-primary-container', 'bg-tertiary-container');
+                loginBtn.classList.replace('text-on-primary-container', 'text-on-tertiary-container');
+            } else if (role === 'teacher') {
+                loginBtn.classList.replace('bg-primary-container', 'bg-secondary');
+                loginBtn.classList.replace('text-on-primary-container', 'text-on-secondary');
+                loginBtn.classList.replace('bg-tertiary-container', 'bg-secondary');
+                loginBtn.classList.replace('text-on-tertiary-container', 'text-on-secondary');
+            } else {
+                loginBtn.className = 'w-full h-12 bg-primary-container text-on-primary-container rounded-lg font-button-text text-button-text hover:bg-primary transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2';
+            }
+        });
+
+        // Handle form submission and API call
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const role = roleSelect.value;
+            const email = document.getElementById('identifier').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Basic validation
+            if (!email || !password) {
+                errorMsg.textContent = 'Please enter both email and password';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // UI state
+            const originalBtnText = loginBtn.innerHTML;
+            loginBtn.innerHTML = `<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Logging in...`;
+            loginBtn.disabled = true;
+            errorMsg.classList.add('hidden');
+
+            try {
+                const response = await apiFetch('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password, role })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Login failed');
+                }
+
+                // Success
+                setToken(data.token);
+                setUser(data.user);
+
+                // Redirect
+                if (data.role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else if (data.role === 'teacher') {
+                    window.location.href = 'teacher.html';
+                } else {
+                    window.location.href = 'student.html';
+                }
+
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.classList.remove('hidden');
+                
+                // Reset UI
+                loginBtn.innerHTML = originalBtnText;
+                loginBtn.disabled = false;
+            }
+        });
+
+        // Toggle password visibility
+        const togglePass = document.querySelector('button[type="button"]');
+        const passInput = document.getElementById('password');
+        
+        togglePass.addEventListener('click', () => {
+            const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passInput.setAttribute('type', type);
+            const icon = togglePass.querySelector('span');
+            icon.innerText = type === 'password' ? 'visibility' : 'visibility_off';
+        });
+    </script>
+</body></html>

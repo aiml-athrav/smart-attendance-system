@@ -21,6 +21,31 @@ router.put('/update-profile-pic', verifyToken, async (req, res) => {
   }
 });
 
+router.put('/update-profile', verifyToken, async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name || name.trim() === '') {
+      return res.status(400).json({ error: 'Name cannot be empty' });
+    }
+    const User = require('../models/User');
+    const user = await User.findByIdAndUpdate(req.user.id, { name }, { new: true });
+    res.json({ 
+      message: 'Profile updated successfully', 
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role, 
+        rollNo: user.rollNo, 
+        profilePic: user.profilePic 
+      } 
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // Get notices (Students, Teachers, and Admins see filtered/private notices)
 router.get('/notices', verifyToken, async (req, res) => {
   try {

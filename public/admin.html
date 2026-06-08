@@ -237,7 +237,7 @@
                 <button class="p-2 hover:bg-surface-container-low rounded-full transition-all">
                     <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
                 </button>
-                <div id="header-profile-trigger" class="w-8 h-8 rounded-full bg-secondary-fixed-dim flex items-center justify-center font-bold text-on-secondary-fixed cursor-pointer hover:ring-2 hover:ring-primary transition-all relative overflow-hidden">
+                <div id="header-profile-trigger" class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container border border-primary/20 flex items-center justify-center font-bold cursor-pointer hover:ring-2 hover:ring-primary transition-all relative overflow-hidden">
                     <img id="header-avatar-img" class="w-full h-full object-cover hidden" src=""/>
                     <span id="header-avatar-txt" class="absolute">AD</span>
                 </div>
@@ -1005,6 +1005,7 @@
                 </div>
             </form>
         </div>
+    </div>
     <!-- Profile Modal -->
     <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
         <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-sm relative">
@@ -1016,8 +1017,22 @@
                     <img id="profile-modal-img" alt="Profile" class="w-full h-full object-cover hidden" src=""/>
                     <div class="w-full h-full rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-[24px] font-bold absolute inset-0" id="profile-avatar-large">AD</div>
                 </div>
-                <h3 id="profile-modal-name" class="text-headline-sm font-bold text-primary">Administrator</h3>
-                <p id="profile-modal-role" class="text-label-md bg-primary-fixed text-primary px-3 py-1 rounded-full font-semibold mt-1">Administrator</p>
+                <div class="flex items-center justify-center gap-2 mt-2 w-full" id="profile-name-container">
+                    <h3 id="profile-modal-name" class="text-headline-sm font-bold text-primary">Administrator</h3>
+                    <button id="btn-edit-name" class="text-primary hover:text-secondary transition-colors p-1" title="Edit Name">
+                        <span class="material-symbols-outlined text-base">edit</span>
+                    </button>
+                </div>
+                <div class="flex items-center justify-center gap-2 mt-2 w-full hidden" id="profile-name-edit-container">
+                    <input type="text" id="profile-name-input" class="border border-outline-variant rounded-lg px-2 py-1 text-center text-body-md font-semibold text-on-surface focus:border-primary outline-none bg-surface-container-low max-w-[180px]" value="" />
+                    <button id="btn-save-name" class="text-secondary hover:text-primary transition-all p-1" title="Save Name">
+                        <span class="material-symbols-outlined text-base">check</span>
+                    </button>
+                    <button id="btn-cancel-edit" class="text-error hover:text-on-surface transition-all p-1" title="Cancel">
+                        <span class="material-symbols-outlined text-base">close</span>
+                    </button>
+                </div>
+                <p id="profile-modal-role" class="text-label-md bg-primary-fixed text-primary px-3 py-1 rounded-full font-semibold mt-2">Administrator</p>
                 
                 <!-- Photo Update Buttons -->
                 <div class="flex gap-2 mt-4 w-full justify-center">
@@ -2518,8 +2533,9 @@
             if (user) {
                 if (sidebarUserName) sidebarUserName.textContent = user.name || 'Academic Portal';
                 document.getElementById('profile-modal-name').textContent = user.name || 'Admin Name';
+                document.getElementById('profile-name-input').value = user.name || 'Admin Name';
                 document.getElementById('profile-modal-email').textContent = user.email || 'N/A';
-                document.getElementById('profile-modal-roll').textContent = user.rollNo || 'N/A';
+                document.getElementById('profile-modal-roll').textContent = user.rollNo || user.id || 'N/A';
                 
                 const initials = user.name ? user.name.substring(0, 2).toUpperCase() : 'AD';
                 if (headerTxt) headerTxt.textContent = initials;
@@ -2699,6 +2715,69 @@
             };
             reader.readAsDataURL(file);
         });
+
+        // Inline Name Edit Logic
+        const btnEditName = document.getElementById('btn-edit-name');
+        const btnCancelEdit = document.getElementById('btn-cancel-edit');
+        const btnSaveName = document.getElementById('btn-save-name');
+        const profileNameContainer = document.getElementById('profile-name-container');
+        const profileNameEditContainer = document.getElementById('profile-name-edit-container');
+        const profileNameInput = document.getElementById('profile-name-input');
+
+        if (btnEditName) {
+            btnEditName.addEventListener('click', () => {
+                const user = getUser();
+                if (user) {
+                    profileNameInput.value = user.name || '';
+                }
+                profileNameContainer.classList.add('hidden');
+                profileNameEditContainer.classList.remove('hidden');
+                profileNameInput.focus();
+            });
+        }
+
+        if (btnCancelEdit) {
+            btnCancelEdit.addEventListener('click', () => {
+                profileNameContainer.classList.remove('hidden');
+                profileNameEditContainer.classList.add('hidden');
+            });
+        }
+
+        if (btnSaveName) {
+            btnSaveName.addEventListener('click', async () => {
+                const newName = profileNameInput.value.trim();
+                if (!newName) {
+                    alert('Name cannot be empty!');
+                    return;
+                }
+
+                try {
+                    const res = await apiFetch('/auth/update-profile', {
+                        method: 'PUT',
+                        body: JSON.stringify({ name: newName })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to update name');
+
+                    // Update localStorage
+                    const currentUser = getUser();
+                    currentUser.name = newName;
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+
+                    // Update UI
+                    updateHeaderProfilePic();
+
+                    // Switch back to view mode
+                    profileNameContainer.classList.remove('hidden');
+                    profileNameEditContainer.classList.add('hidden');
+
+                    showToast('Profile name updated successfully!');
+                } catch (err) {
+                    console.error(err);
+                    alert("Could not update name: " + err.message);
+                }
+            });
+        }
     </script>
 </body>
 </html>

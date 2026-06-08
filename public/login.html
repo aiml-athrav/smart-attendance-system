@@ -132,30 +132,93 @@
                 transform: translateY(-20px) rotate(5deg);
             }
         }
-        @keyframes blobShift {
-            0%, 100% {
-                transform: translate(0px, 0px) scale(1);
+        @keyframes fadeInUpIOS {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes iosBlobMove {
+            0% {
+                transform: translate(0px, 0px) scale(1) rotate(0deg);
             }
             33% {
-                transform: translate(30px, -50px) scale(1.1);
+                transform: translate(80px, -50px) scale(1.12) rotate(120deg);
             }
             66% {
-                transform: translate(-20px, 20px) scale(0.95);
+                transform: translate(-50px, 80px) scale(0.92) rotate(240deg);
+            }
+            100% {
+                transform: translate(0px, 0px) scale(1) rotate(360deg);
+            }
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(3deg);
             }
         }
 
         .login-card {
+            background: rgba(255, 255, 255, 0.72) !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08), 0 10px 20px -10px rgba(0, 0, 0, 0.04);
-            backdrop-filter: blur(12px);
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            animation: fadeInUpIOS 0.9s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
         }
         
-        .animate-blob-1 {
-            animation: blobShift 15s ease-in-out infinite alternate;
+        /* iOS Liquid Mesh Background */
+        .ios-bg-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
         }
-        
-        .animate-blob-2 {
-            animation: blobShift 18s ease-in-out infinite alternate-reverse 2s;
+        .ios-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            mix-blend-mode: multiply;
+            opacity: 0.32;
+            filter: blur(80px);
+            animation: iosBlobMove 25s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+        .ios-blob-1 {
+            background: radial-gradient(circle, hsl(172, 80%, 35%) 0%, rgba(255,255,255,0) 70%);
+            top: -10%;
+            left: -10%;
+            animation-duration: 22s;
+        }
+        .ios-blob-2 {
+            background: radial-gradient(circle, hsl(243, 75%, 62%) 0%, rgba(255,255,255,0) 70%);
+            bottom: -15%;
+            right: -10%;
+            animation-duration: 28s;
+            animation-delay: -5s;
+        }
+        .ios-blob-3 {
+            background: radial-gradient(circle, hsl(150, 80%, 40%) 0%, rgba(255,255,255,0) 70%);
+            top: 40%;
+            left: 20%;
+            animation-duration: 24s;
+            animation-delay: -10s;
+        }
+        .ios-blob-4 {
+            background: radial-gradient(circle, hsl(32, 95%, 58%) 0%, rgba(255,255,255,0) 70%);
+            bottom: 30%;
+            right: 15%;
+            animation-duration: 20s;
+            animation-delay: -15s;
         }
         
         .aesthetic-card-1 {
@@ -173,58 +236,6 @@
         input:focus, select:focus {
             transform: translateY(-1px);
             box-shadow: 0 8px 20px -6px rgba(17, 94, 89, 0.15) !important;
-        }
-
-        /* Dynamic Liquid Bubble Styling */
-        .bubble-container {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .liquid-bubble {
-            position: absolute;
-            bottom: -150px;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 60%, rgba(172, 80%, 30%, 0.12) 100%);
-            border: 1.5px solid rgba(255, 255, 255, 0.45);
-            box-shadow: 
-                inset 0 12px 24px rgba(255, 255, 255, 0.55), 
-                inset -12px 0 24px rgba(172, 80%, 30%, 0.18), 
-                inset 12px 0 24px rgba(243, 75, 59, 0.18), 
-                0 20px 40px rgba(30, 27, 75, 0.04);
-            backdrop-filter: blur(1px);
-            animation: floatUp 15s infinite linear, morph 6s infinite ease-in-out;
-            pointer-events: none;
-        }
-        
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) translateX(0) scale(0.8);
-                opacity: 0;
-            }
-            8% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-125vh) translateX(120px) scale(1.25);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes morph {
-            0%, 100% {
-                border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-            }
-            33% {
-                border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
-            }
-            66% {
-                border-radius: 48% 52% 35% 65% / 40% 60% 40% 60%;
-            }
         }
     </style>
 <style>
@@ -246,9 +257,11 @@
 </header>
 <main class="flex-grow flex items-center justify-center px-margin-mobile md:px-0 py-12 relative overflow-hidden">
 <!-- Abstract Background Decoration -->
-<div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-<div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-[hsl(172,80%,40%)] to-[hsl(243,75%,69%)] rounded-full blur-[100px] animate-blob-1 opacity-20"></div>
-<div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-gradient-to-tr from-[hsl(150,80%,45%)] to-[hsl(172,80%,40%)] rounded-full blur-[100px] animate-blob-2 opacity-20"></div>
+<div class="ios-bg-container">
+<div class="ios-blob ios-blob-1"></div>
+<div class="ios-blob ios-blob-2"></div>
+<div class="ios-blob ios-blob-3"></div>
+<div class="ios-blob ios-blob-4"></div>
 </div>
 <!-- Login Container -->
 <div class="login-card bg-surface-container-lowest w-full max-w-md rounded-xl border border-outline-variant p-lg relative z-10">
@@ -443,49 +456,5 @@
             const icon = togglePass.querySelector('span');
             icon.innerText = type === 'password' ? 'visibility' : 'visibility_off';
         });
-
-        // Dynamic Liquid Bubble Generator
-        function createLiquidBubbles() {
-            const mainEl = document.querySelector('main');
-            if (!mainEl) return;
-            
-            const container = document.createElement('div');
-            container.className = 'bubble-container';
-            mainEl.appendChild(container);
-
-            const bubbleCount = 15;
-            for (let i = 0; i < bubbleCount; i++) {
-                const bubble = document.createElement('div');
-                bubble.className = 'liquid-bubble';
-                
-                // Randomize size between 30px and 110px
-                const size = Math.random() * 80 + 30;
-                bubble.style.width = `${size}px`;
-                bubble.style.height = `${size}px`;
-                
-                // Randomize horizontal starting position
-                bubble.style.left = `${Math.random() * 100}%`;
-                
-                // Randomize float duration between 12s and 25s, and morph duration between 5s and 9s
-                const floatDuration = Math.random() * 13 + 12;
-                const morphDuration = Math.random() * 4 + 5;
-                bubble.style.animationDuration = `${floatDuration}s, ${morphDuration}s`;
-                
-                // Randomize animation delay to prevent all starting at the same time
-                bubble.style.animationDelay = `${Math.random() * -20}s, ${Math.random() * -5}s`;
-                
-                // Randomize background tint matching theme HSL values
-                if (Math.random() > 0.5) {
-                    bubble.style.background = `radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 60%, hsla(243, 75%, 59%, 0.15) 100%)`;
-                } else {
-                    bubble.style.background = `radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 60%, hsla(172, 80%, 30%, 0.15) 100%)`;
-                }
-
-                container.appendChild(bubble);
-            }
-        }
-        
-        // Execute on DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', createLiquidBubbles);
     </script>
 </body></html>

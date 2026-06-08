@@ -1005,6 +1005,56 @@
                 </div>
             </form>
         </div>
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-sm relative">
+            <button id="close-profile-modal" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-primary mb-4 relative">
+                    <img id="profile-modal-img" alt="Profile" class="w-full h-full object-cover hidden" src=""/>
+                    <div class="w-full h-full rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-[24px] font-bold absolute inset-0" id="profile-avatar-large">AD</div>
+                </div>
+                <h3 id="profile-modal-name" class="text-headline-sm font-bold text-primary">Administrator</h3>
+                <p id="profile-modal-role" class="text-label-md bg-primary-fixed text-primary px-3 py-1 rounded-full font-semibold mt-1">Administrator</p>
+                
+                <!-- Photo Update Buttons -->
+                <div class="flex gap-2 mt-4 w-full justify-center">
+                    <button id="btn-open-camera" class="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 justify-center">
+                        <span class="material-symbols-outlined text-sm">photo_camera</span>
+                        Take Photo
+                    </button>
+                    <button id="btn-select-file" class="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 justify-center">
+                        <span class="material-symbols-outlined text-sm">upload_file</span>
+                        Select File
+                    </button>
+                    <input type="file" id="profile-file-input" accept="image/*" class="hidden">
+                </div>
+
+                <!-- Camera Container -->
+                <div id="camera-container" class="w-full hidden border border-outline-variant p-3 rounded-xl bg-surface-container-low mt-4 space-y-2">
+                    <div class="relative aspect-video w-full max-w-[200px] mx-auto rounded-lg overflow-hidden bg-black border border-outline-variant">
+                        <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover"></video>
+                    </div>
+                    <div class="flex justify-center gap-2">
+                        <button id="btn-capture-photo" class="bg-primary text-on-primary text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-surface-tint active:scale-95 transition-all">Capture</button>
+                        <button id="btn-close-camera" class="bg-surface-container-low border border-outline-variant text-on-surface-variant text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-surface-container transition-all">Cancel</button>
+                    </div>
+                </div>
+                
+                <div class="w-full mt-6 space-y-3 text-left">
+                    <div class="border-b border-outline-variant pb-2">
+                        <span class="text-label-md text-on-surface-variant block">Email ID</span>
+                        <span id="profile-modal-email" class="text-body-md font-medium">--</span>
+                    </div>
+                    <div>
+                        <span class="text-label-md text-on-surface-variant block">Admin ID</span>
+                        <span id="profile-modal-roll" class="text-body-md font-medium">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/api.js"></script>
@@ -2650,57 +2700,5 @@
             reader.readAsDataURL(file);
         });
     </script>
-
-    <!-- Profile Modal -->
-    <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
-        <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-xl w-full max-w-sm relative">
-            <button id="close-profile-modal" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <div class="flex flex-col items-center text-center">
-                <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-primary mb-4 relative">
-                    <img id="profile-modal-img" alt="Profile" class="w-full h-full object-cover hidden" src=""/>
-                    <div class="w-full h-full rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-[24px] font-bold absolute inset-0" id="profile-avatar-large">AD</div>
-                </div>
-                <h3 id="profile-modal-name" class="text-headline-sm font-bold text-primary">Administrator</h3>
-                <p id="profile-modal-role" class="text-label-md bg-primary-fixed text-primary px-3 py-1 rounded-full font-semibold mt-1">Administrator</p>
-                
-                <!-- Photo Update Buttons -->
-                <div class="flex gap-2 mt-4 w-full justify-center">
-                    <button id="btn-open-camera" class="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 justify-center">
-                        <span class="material-symbols-outlined text-sm">photo_camera</span>
-                        Take Photo
-                    </button>
-                    <button id="btn-select-file" class="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 justify-center">
-                        <span class="material-symbols-outlined text-sm">upload_file</span>
-                        Select File
-                    </button>
-                    <input type="file" id="profile-file-input" accept="image/*" class="hidden">
-                </div>
-
-                <!-- Camera Container -->
-                <div id="camera-container" class="w-full hidden border border-outline-variant p-3 rounded-xl bg-surface-container-low mt-4 space-y-2">
-                    <div class="relative aspect-video w-full max-w-[200px] mx-auto rounded-lg overflow-hidden bg-black border border-outline-variant">
-                        <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover"></video>
-                    </div>
-                    <div class="flex justify-center gap-2">
-                        <button id="btn-capture-photo" class="bg-primary text-on-primary text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-surface-tint active:scale-95 transition-all">Capture</button>
-                        <button id="btn-close-camera" class="bg-surface-container-low border border-outline-variant text-on-surface-variant text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-surface-container transition-all">Cancel</button>
-                    </div>
-                </div>
-                
-                <div class="w-full mt-6 space-y-3 text-left">
-                    <div class="border-b border-outline-variant pb-2">
-                        <span class="text-label-md text-on-surface-variant block">Email ID</span>
-                        <span id="profile-modal-email" class="text-body-md font-medium">--</span>
-                    </div>
-                    <div>
-                        <span class="text-label-md text-on-surface-variant block">Admin ID</span>
-                        <span id="profile-modal-roll" class="text-body-md font-medium">--</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

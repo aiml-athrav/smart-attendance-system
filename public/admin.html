@@ -288,58 +288,49 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-                    <!-- Attendance Trends Chart -->
-                    <div class="lg:col-span-2 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
-                        <div class="flex justify-between items-center mb-6">
-                            <h4 class="text-headline-sm">Weekly Attendance Trends</h4>
-                            <div class="flex gap-2">
-                                <span class="flex items-center gap-1 text-label-md text-on-surface-variant">
-                                    <span class="w-3 h-3 rounded-full bg-primary"></span> Current Week
-                                </span>
-                            </div>
-                        </div>
-                        <div class="h-64 flex items-end justify-between gap-2 px-2">
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 92%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Mon</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 88%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Tue</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 95%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Wed</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 91%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Thu</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 78%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Fri</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 35%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Sat</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
-                                <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 20%;"></div>
-                                <span class="text-label-md text-on-surface-variant">Sun</span>
-                            </div>
+                <!-- Attendance Trends Chart -->
+                <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm mt-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-headline-sm">Weekly Attendance Trends</h4>
+                        <div class="flex gap-2">
+                            <span class="flex items-center gap-1 text-label-md text-on-surface-variant">
+                                <span class="w-3 h-3 rounded-full bg-primary"></span> Current Week
+                            </span>
                         </div>
                     </div>
-                    <!-- Low Attendance Alerts -->
-                    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col">
-                        <h4 class="text-headline-sm mb-6 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
-                            Alerts
-                        </h4>
-                        <div id="alerts-container" class="space-y-4 flex-1 custom-scrollbar overflow-y-auto max-h-64">
+                    <div class="h-64 flex items-end justify-between gap-2 px-2">
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 92%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Mon</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 88%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Tue</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 95%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Wed</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 91%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Thu</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 78%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Fri</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 35%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Sat</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                            <div class="w-full bg-primary-fixed rounded-t-lg transition-all duration-300 group-hover:bg-primary-container" style="height: 20%;"></div>
+                            <span class="text-label-md text-on-surface-variant">Sun</span>
                         </div>
                     </div>
                 </div>
+
+
 
                 <!-- Student Risk Profiling Section -->
                 <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden mt-8">
@@ -1141,25 +1132,6 @@
                         if (complaintsBadgeDot) complaintsBadgeDot.classList.add('hidden');
                         if (complaintsBadgeCount) complaintsBadgeCount.classList.add('hidden');
                         if (mobComplaintsBadgeDot) mobComplaintsBadgeDot.classList.add('hidden');
-                    }
-
-                    const alertsContainer = document.getElementById('alerts-container');
-                    alertsContainer.innerHTML = '';
-                    if (data.lowAttendanceAlerts && data.lowAttendanceAlerts.length > 0) {
-                        data.lowAttendanceAlerts.forEach(alert => {
-                            const initials = alert.name.substring(0, 2).toUpperCase();
-                            alertsContainer.innerHTML += `
-                                <div class="flex items-center gap-4 p-3 bg-error-container/30 border border-error/20 rounded-lg animate-[fadeIn_0.2s_ease-out]">
-                                    <div class="w-10 h-10 rounded-full bg-error text-on-error flex items-center justify-center font-bold">${initials}</div>
-                                    <div class="flex-1">
-                                        <p class="text-body-md font-bold">${alert.name} <span class="text-[10px] text-on-surface-variant">(${alert.rollNo})</span></p>
-                                        <p class="text-label-md text-error font-semibold">Attendance: ${alert.attendance}</p>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                    } else {
-                        alertsContainer.innerHTML = '<p class="text-label-md text-on-surface-variant text-center p-4">No low attendance alerts.</p>';
                     }
                 }
 

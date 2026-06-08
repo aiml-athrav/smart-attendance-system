@@ -237,6 +237,64 @@
             transform: translateY(-1px);
             box-shadow: 0 8px 20px -6px rgba(17, 94, 89, 0.15) !important;
         }
+
+        /* Success Checkmark Animation Styles */
+        .checkmark-svg {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: hsl(150, 80%, 35%);
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px hsl(150, 80%, 35%);
+            animation: fillCheckmark .4s ease-in-out .4s forwards, scaleCheckmark .3s ease-in-out .9s both;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: hsl(150, 80%, 35%);
+            fill: none;
+            animation: strokeCircle .6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke: #ffffff;
+            animation: strokeCheck .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards;
+        }
+
+        @keyframes strokeCircle {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes strokeCheck {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes fillCheckmark {
+            100% {
+                box-shadow: inset 0px 0px 0px 40px hsl(150, 80%, 35%);
+            }
+        }
+
+        @keyframes scaleCheckmark {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
     </style>
 <style>
     body {
@@ -263,8 +321,18 @@
 <div class="ios-blob ios-blob-3"></div>
 <div class="ios-blob ios-blob-4"></div>
 </div>
-<!-- Login Container -->
-<div class="login-card bg-surface-container-lowest w-full max-w-md rounded-xl border border-outline-variant p-lg relative z-10">
+<div class="login-card bg-surface-container-lowest w-full max-w-md rounded-xl border border-outline-variant p-lg relative z-10 overflow-hidden">
+    <!-- Success Checkmark Overlay -->
+    <div id="success-overlay" class="absolute inset-0 bg-white/95 backdrop-blur-md rounded-xl flex flex-col items-center justify-center p-lg opacity-0 pointer-events-none transition-all duration-500 transform scale-95 z-20">
+        <div class="mb-md">
+            <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        <h3 class="text-headline-sm font-bold text-[hsl(150,80%,35%)] tracking-tight">Login Successful</h3>
+        <p class="text-body-md text-on-surface-variant mt-2 text-center">Opening your portal dashboard...</p>
+    </div>
 
 <!-- Branding/Icon -->
 <div class="flex flex-col items-center mb-xl">
@@ -427,14 +495,22 @@
                 setToken(data.token);
                 setUser(data.user);
 
-                // Redirect
-                if (data.role === 'admin') {
-                    window.location.href = 'admin.html';
-                } else if (data.role === 'teacher') {
-                    window.location.href = 'teacher.html';
-                } else {
-                    window.location.href = 'student.html';
-                }
+                // Trigger Success Checkmark Overlay Animation
+                const successOverlay = document.getElementById('success-overlay');
+                successOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                successOverlay.classList.add('opacity-100');
+                successOverlay.style.transform = 'scale(1)';
+
+                // Redirect after animation completes (1.6s delay)
+                setTimeout(() => {
+                    if (data.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else if (data.role === 'teacher') {
+                        window.location.href = 'teacher.html';
+                    } else {
+                        window.location.href = 'student.html';
+                    }
+                }, 1600);
 
             } catch (error) {
                 errorMsg.textContent = error.message;
